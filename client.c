@@ -2,58 +2,35 @@
 ** EPITECH PROJECT, 2018
 ** MyFTP
 ** File description:
-** Main client C file
+** Main server C file
 */
 
-#include "client.h"
 #include "server.h"
 
-int    handle_client(t_client *client)
+int main(int ac, char **av)
 {
-	static const char *const welcome = "Welcome, your IP address is: ";
-	if (write(client->client_fd, welcome, strlen(welcome)) == -1 ||
-		write(client->client_fd, client->client_ip, strlen(client->client_ip)) == -1 ||
-		write(client->client_fd, "\n", 1) == -1)
-		return 84;
-    return 0;
-}
-
-int main ()
-{
-    t_client    *client = malloc(sizeof(t_client));
-    t_host    *server = malloc(sizeof(t_host));
-
-    server->port = 8080;
-    client->s_in_size = sizeof(client->s_in_client);
-    server->pe = getprotobyname("TCP");
-    server->s_in.sin_family = AF_INET;
-    server->s_in.sin_port = htons(server->port);
-    server->s_in.sin_addr.s_addr = INADDR_ANY;
-    if (!server->pe)
+    t_client *client = malloc(sizeof(t_client));
+    if (ac != 3)
         return 84;
-    server->server_fd = socket(AF_INET, SOCK_STREAM, server->pe->p_proto);
-    if (server->server_fd == -1)
+    client->ip = av[1];
+    client->port = atoi(av[2]);
+    client->pe = getprotobyname("TCP");
+    if (!client->pe)
         return 84;
-    if (bind(server->server_fd, (const struct sockaddr *)&server->s_in, sizeof(server->s_in)))
-    {
-        close(server->server_fd);
-        return 84;
-    }
-    if (listen(server->server_fd, 42) == -1)
-    {
-        close(server->server_fd);
-        return 84;
-    }
-    client->client_fd = accept(server->server_fd, (struct sockaddr *) &client->s_in_client, &client->s_in_size);
+    client->client_fd = socket(AF_INET, SOCK_STREAM, client->pe->p_proto);
     if (client->client_fd == -1)
-    {
-        close(server->server_fd);
+        return 84;
+    client->s_in_client.sin_family = AF_INET;
+    client->s_in_client.sin_port = htons(client->port);
+    client->s_in_client.sin_addr.s_addr = inet_addr(client->ip);
+    if (connect(client->client_fd, (struct sockaddr *) &client->s_in_client, sizeof(client->s_in_client)) == -1) {
+        write(2, "Can't connect\n", strlen("Can't connect\n"));
+        if (close(client->client_fd) == -1)
+            write(2, "Can't close\n", strlen("Can't close\n"));
         return 84;
     }
-    client->client_ip = inet_ntoa(client->s_in_client.sin_addr);
-    write(1, client->client_ip, strlen(client->client_ip));
-    if (handle_client(client) == -1)
+    write(1, "Salut\n", strlen("Salut\n"));
+    if (close(client->client_fd) == -1)
         return 84;
-    if (close(server->server_fd) == -1)
-        return 84;
-}
+    return 0;
+};
