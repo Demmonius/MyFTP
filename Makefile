@@ -5,7 +5,7 @@ RM	= rm -f
 
 NAME_SERVER	= server
 
-SRCS_SERVER	= ./sever.c
+SRCS_SERVER	= ./server.c
 
 OBJS_SERVER	= $(SRCS_SERVER:.c=.o)
 
