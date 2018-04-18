@@ -11,6 +11,7 @@
 int    handle_client(t_client *client)
 {
 	static const char *const welcome = "Welcome, your IP address is: ";
+	
 	if (write(client->client_fd, welcome, strlen(welcome)) == -1 ||
 		write(client->client_fd, client->client_ip, strlen(client->client_ip)) == -1 ||
 		write(client->client_fd, "\n", 1) == -1)
