@@ -27,4 +27,9 @@ typedef struct s_host
 	int				server_fd;
 }					t_host;
 
+#define LEN_FUNCS 1
+
+extern void (*const commands[1])(t_client *);
+extern const char commands_name[LEN_FUNCS][64];
+
 #endif /* !SERVER_H_ */
