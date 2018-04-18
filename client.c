@@ -7,6 +7,24 @@
 
 #include "server.h"
 
+int	read_socket(t_client *client)
+{
+    char * line = NULL;
+	size_t len = 0;
+    ssize_t read;
+
+    if (read = getline(&line, &len, stdin) == -1) {
+        printf("No line\n");
+    } else {
+        printf("Réception d'une ligne de longueur %zu :\n", read);
+        printf("%s", line);
+    }
+
+	if (line)
+		free(line);
+	return (0);
+}
+
 int main(int ac, char **av)
 {
     t_client *client = malloc(sizeof(t_client));
@@ -29,7 +47,7 @@ int main(int ac, char **av)
             write(2, "Can't close\n", strlen("Can't close\n"));
         return 84;
     }
-    write(1, "Salut\n", strlen("Salut\n"));
+    read_socket(client);
     if (close(client->client_fd) == -1)
         return 84;
     return 0;
