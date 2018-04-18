@@ -8,14 +8,35 @@
 #include "client.h"
 #include "server.h"
 
+char	*get_command(t_client *client)
+{
+	char *line = NULL;
+	size_t size;
+	FILE* fp = fdopen(client->client_fd, "r");
+
+	if ((getline(&line, &size, fp) == -1))
+	    return NULL;
+	else
+		return line;
+}
+
 int    handle_client(t_client *client)
 {
 	static const char *const welcome = "Welcome, your IP address is: ";
-	
+	char *command = NULL;
+
 	if (write(client->client_fd, welcome, strlen(welcome)) == -1 ||
 		write(client->client_fd, client->client_ip, strlen(client->client_ip)) == -1 ||
 		write(client->client_fd, "\n", 1) == -1)
 		return 84;
+	while (42) {
+		command = get_command(client);
+		if (!command)
+			break ;
+		write(1, command, strlen(command));
+	}
+	if (command)
+		free(command);
     return 0;
 }
 
