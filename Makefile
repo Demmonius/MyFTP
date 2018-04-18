@@ -5,7 +5,9 @@ RM	= rm -f
 
 NAME_SERVER	= server
 
-SRCS_SERVER	= ./sever.c
+SRCS_SERVER	= ./server.c	\
+		  ./commands.c	\
+		  ./manage_commands.c
 
 OBJS_SERVER	= $(SRCS_SERVER:.c=.o)
 
@@ -16,9 +18,9 @@ SRCS_CLIENT	= ./client.c
 OBJS_CLIENT	= $(SRCS_CLIENT:.c=.o)
 
 CFLAGS = -I ./inc/
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g3
 
-all: server client
+all: server
 
 
 server: $(OBJS_SERVER)
