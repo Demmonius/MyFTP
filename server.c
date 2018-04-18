@@ -33,7 +33,6 @@ int    handle_client(t_client *client)
 		command = get_command(client);
 		if (!command)
 			break ;
-		write(1, command, strlen(command));
 	}
 	if (command)
 		free(command);
