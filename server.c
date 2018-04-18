@@ -16,8 +16,10 @@ char	*get_command(t_client *client)
 
 	if ((getline(&line, &size, fp) == -1))
 	    return NULL;
-	else
+	else {
+		line[strlen(line) - 1] = 0;
 		return line;
+	}
 }
 
 int    handle_client(t_client *client)
@@ -25,15 +27,16 @@ int    handle_client(t_client *client)
 	static const char *const welcome = "Welcome, your IP address is: ";
 	char *command = NULL;
 
+	client->have_to_quit = false;
 	if (write(client->client_fd, welcome, strlen(welcome)) == -1 ||
 		write(client->client_fd, client->client_ip, strlen(client->client_ip)) == -1 ||
 		write(client->client_fd, "\n", 1) == -1)
 		return 84;
-	while (42) {
+	while (!client->have_to_quit) {
 		command = get_command(client);
 		if (!command)
 			break ;
-		write(1, command, strlen(command));
+		manage_commands(command, client);
 	}
 	if (command)
 		free(command);
