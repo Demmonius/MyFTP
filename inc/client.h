@@ -17,6 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct			s_client
 {
@@ -27,6 +28,7 @@ typedef struct			s_client
     socklen_t			s_in_size;
     struct protoent		*pe;
     struct sockaddr_in    	s_in_client;
+    bool                  have_to_quit;
 }    				t_client;
 
 #endif /* !CLIENT_H_ */

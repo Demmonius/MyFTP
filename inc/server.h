@@ -27,6 +27,10 @@ typedef struct s_host
 	int				server_fd;
 }					t_host;
 
+int	manage_commands(char *command, t_client *client);
+void	commands_ls(t_client *client);
+void	commands_quit(t_client *client);
+
 #define LEN_FUNCS 2
 
 extern void (*const commands[LEN_FUNCS])(t_client *);
