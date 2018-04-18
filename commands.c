@@ -7,17 +7,14 @@
 
 #include "server.h"
 
-void	commands_ls(t_client *client)
-{
-	printf("LS started\n");
-}
-
 void (*const commands_func[])(t_client *) = {
 	commands_ls,
+	commands_quit,
 };
 
 const char commands_name[][64] = {
-	"ls"
+	"ls",
+	"quit"
 };
 
 int manage_commands(char *command, t_client *client)
