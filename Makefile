@@ -16,7 +16,7 @@ SRCS_CLIENT	= ./client.c
 OBJS_CLIENT	= $(SRCS_CLIENT:.c=.o)
 
 CFLAGS = -I ./inc/
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g3
 
 all: server client
 
