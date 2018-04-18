@@ -16,8 +16,10 @@ char	*get_command(t_client *client)
 
 	if ((getline(&line, &size, fp) == -1))
 	    return NULL;
-	else
+	else {
+		line[strlen(line) - 1] = 0;
 		return line;
+	}
 }
 
 int    handle_client(t_client *client)
@@ -33,6 +35,7 @@ int    handle_client(t_client *client)
 		command = get_command(client);
 		if (!command)
 			break ;
+		manage_commands(command, client);
 	}
 	if (command)
 		free(command);
