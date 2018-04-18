@@ -22,6 +22,7 @@
 typedef struct			s_client
 {
     char			*ip;
+    char            *path;
     int				client_fd;
     char			*client_ip;
     int				port;
