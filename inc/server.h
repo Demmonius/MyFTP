@@ -30,8 +30,9 @@ typedef struct s_host
 int	manage_commands(char *command, t_client *client);
 void	commands_ls(t_client *client);
 void	commands_quit(t_client *client);
+void	commands_pwd(t_client *client);
 
-#define LEN_FUNCS 2
+#define LEN_FUNCS 3
 
 extern void (*const commands[LEN_FUNCS])(t_client *);
 extern const char commands_name[LEN_FUNCS][64];
