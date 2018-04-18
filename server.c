@@ -48,9 +48,10 @@ int main (int ac, char **av)
 	t_client    *client = malloc(sizeof(t_client));
 	t_host    *server = malloc(sizeof(t_host));
 
-	if (ac != 2)
+	if (ac != 3)
 		return (84);
 	server->port = atoi(av[1]);
+	server->path = av[2];
 	client->s_in_size = sizeof(client->s_in_client);
 	server->pe = getprotobyname("TCP");
 	server->s_in.sin_family = AF_INET;
@@ -80,7 +81,6 @@ int main (int ac, char **av)
 	    return 84;
 	}
 	client->client_ip = inet_ntoa(client->s_in_client.sin_addr);
-	write(1, client->client_ip, strlen(client->client_ip));
 	if (handle_client(client) == 84)
 	    return 84;
 	if (close(server->server_fd) == -1 || close(client->client_fd) == -1)
