@@ -13,7 +13,7 @@ void	commands_ls(t_client *client)
 }
 
 void (*const commands_func[])(t_client *) = {
-	commands_ls
+	commands_ls,
 };
 
 const char commands_name[][64] = {
