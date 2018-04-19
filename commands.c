@@ -15,7 +15,7 @@ void (*const commands_func[])(t_client *, char *) = {
 };
 
 const char commands_name[][64] = {
-	"ls",
+	"list",
 	"quit",
 	"pwd",
 	"retr"

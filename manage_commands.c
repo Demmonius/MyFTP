@@ -7,9 +7,22 @@
 
 #include "server.h"
 
-void	commands_ls(t_client *client, char *command)
+void	commands_list(t_client *client)
 {
-	printf("LS started\n");
+	DIR *rep = NULL;
+	struct dirent *file = NULL;
+
+	write(1, client->path, strlen(client->path));
+	rep = opendir(client->path);
+	if (rep == NULL)
+	  return ;
+	while ((file = readdir(rep)) != NULL) {
+	  write(client->client_fd, file->d_name, strlen(file->d_name));
+	  write(client->client_fd, "\t", 1);
+	}
+	write(client->client_fd, "\n", 1);
+	if (closedir(rep) == -1)
+	        return ;
 }
 
 void	commands_pwd(t_client *client, char *command)
