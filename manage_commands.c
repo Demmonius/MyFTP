@@ -43,19 +43,19 @@ void commands_retr(t_client *client, char *command)
 	fd = open(arg, O_RDONLY);
         if (fd == -1)
         {
-                fprintf(stderr, "Error opening file --> %s", strerror(errno));
+                fprintf(stderr, "Error opening file --> %s\n", strerror(errno));
 		return ;
         }
         if (fstat(fd, &file_stat) < 0)
         {
-                fprintf(stderr, "Error fstat --> %s", strerror(errno));
+                fprintf(stderr, "Error fstat --> %s\n", strerror(errno));
 		return ;
         }
         /* Sending file size */
         len = send(client->client_fd, file_size, sizeof(file_size), 0);
         if (len < 0)
         {
-              fprintf(stderr, "Error on sending greetings --> %s", strerror(errno));
+              fprintf(stderr, "Error on sending greetings --> %s\n", strerror(errno));
 	      return ;
         }
 

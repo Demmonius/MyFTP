@@ -52,6 +52,7 @@ int main (int ac, char **av)
 		return (84);
 	server->port = atoi(av[1]);
 	server->path = av[2];
+	client->path = av[2];
 	client->s_in_size = sizeof(client->s_in_client);
 	server->pe = getprotobyname("TCP");
 	server->s_in.sin_family = AF_INET;
