@@ -41,7 +41,7 @@ void	commands_pwd(t_client *client, char *command);
 void	commands_retr(t_client *client, char *command);
 void	commands_user(t_client *client, char *command);
 
-#define LEN_FUNCS 4
+#define LEN_FUNCS 5
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];
