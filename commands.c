@@ -8,13 +8,13 @@
 #include "server.h"
 
 void (*const commands_func[])(t_client *) = {
-	commands_ls,
+	commands_list,
 	commands_quit,
 	commands_pwd,
 };
 
 const char commands_name[][64] = {
-	"ls",
+	"list",
 	"quit",
 	"pwd"
 };
