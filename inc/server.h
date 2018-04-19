@@ -29,7 +29,7 @@ typedef struct s_host
 }					t_host;
 
 int	manage_commands(char *command, t_client *client);
-void	commands_ls(t_client *client);
+void	commands_list(t_client *client);
 void	commands_quit(t_client *client);
 void	commands_pwd(t_client *client);
 
