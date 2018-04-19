@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void	commands_list(t_client *client)
+void	commands_list(t_client *client, char *command)
 {
 	DIR *rep = NULL;
 	struct dirent *file = NULL;
@@ -63,20 +63,5 @@ void commands_retr(t_client *client, char *command)
         {
                 fprintf(stderr, "Error fstat --> %s\n", strerror(errno));
 		return ;
-        }
-        /* Sending file size */
-        len = send(client->client_fd, file_size, sizeof(file_size), 0);
-        if (len < 0)
-        {
-              fprintf(stderr, "Error on sending greetings --> %s\n", strerror(errno));
-	      return ;
-        }
-
-        offset = 0;
-        remain_data = file_stat.st_size;
-        /* Sending file data */
-        while (((sent_bytes = sendfile(client->client_fd, fd, &offset, BUFSIZ)) > 0) && (remain_data > 0))
-        {
-                remain_data -= sent_bytes;
         }
 }

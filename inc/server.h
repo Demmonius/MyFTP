@@ -22,6 +22,7 @@
 #include <sys/types.h>
 #include <sys/sendfile.h>
 #include <fcntl.h>
+#include <dirent.h>
 #include "client.h"
 
 typedef struct s_host
@@ -32,15 +33,17 @@ typedef struct s_host
 	int				server_fd;
 	char				*path;
 }					t_host;
-
+char	*parse_command(char *command, char c, int nb);
 int	manage_commands(char *command, t_client *client);
-void	commands_list(t_client *client);
-void	commands_quit(t_client *client);
-void	commands_pwd(t_client *client);
+void	commands_list(t_client *client, char *command);
+void	commands_quit(t_client *client, char *command);
+void	commands_pwd(t_client *client, char *command);
+void	commands_retr(t_client *client, char *command);
 
 #define LEN_FUNCS 4
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];
+extern const char commands_infos[14][256];
 
 #endif /* !SERVER_H_ */
