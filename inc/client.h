@@ -21,15 +21,16 @@
 
 typedef struct			s_client
 {
-    char			*ip;
-    char            *path;
-    int				client_fd;
-    char			*client_ip;
-    int				port;
-    socklen_t			s_in_size;
-    struct protoent		*pe;
-    struct sockaddr_in    	s_in_client;
-    bool                  have_to_quit;
-}    				t_client;
+    char		*ip;
+    char            	*path;
+    int			client_fd;
+    char		*client_ip;
+    int			port;
+    socklen_t		s_in_size;
+    struct protoent	*pe;
+    struct sockaddr_in	s_in_client;
+    bool		have_to_quit;
+    bool                is_log;
+}    			t_client;
 
 #endif /* !CLIENT_H_ */

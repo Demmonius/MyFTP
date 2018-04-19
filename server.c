@@ -27,6 +27,7 @@ int    handle_client(t_client *client)
 	static const char *const welcome = "Welcome, your IP address is: ";
 	char *command = NULL;
 
+	client->is_log = false;
 	client->have_to_quit = false;
 	if (write(client->client_fd, commands_infos[5], strlen(commands_infos[5])) == -1 ||
 		write(client->client_fd, "\n", 1) == -1)

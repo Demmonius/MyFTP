@@ -12,13 +12,16 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_quit,
 	commands_pwd,
 	commands_retr,
+	commands_user,
+	
 };
 
 const char commands_name[][64] = {
 	"list",
 	"quit",
 	"pwd",
-	"retr"
+	"retr",
+	"user"
 };
 
 const char commands_infos[][256] = {
@@ -64,7 +67,7 @@ char	*parse_command(char *command, char c, int nb)
 	return new;
 }
 
-int manage_commands(char *command, t_client *client)
+int	manage_commands(char *command, t_client *client)
 {
 	char * new = parse_command(command, ' ', 0);
 

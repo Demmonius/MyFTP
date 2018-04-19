@@ -65,3 +65,9 @@ void commands_retr(t_client *client, char *command)
 		return ;
         }
 }
+
+void commands_user(t_client *client, char *command)
+{
+	parse_command(command, ' ', 1);
+	client->is_log = true;
+}

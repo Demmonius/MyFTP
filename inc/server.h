@@ -39,6 +39,7 @@ void	commands_list(t_client *client, char *command);
 void	commands_quit(t_client *client, char *command);
 void	commands_pwd(t_client *client, char *command);
 void	commands_retr(t_client *client, char *command);
+void	commands_user(t_client *client, char *command);
 
 #define LEN_FUNCS 4
 
