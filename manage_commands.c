@@ -13,7 +13,7 @@ void	commands_list(t_client *client, char *command)
 		fprintf(stderr, "Dup2 failed\n");
 		return ;
 	}
-	if (execl("/bin/ls", "-l", NULL) == -1) {
+	if (execl("/bin/ls", "/bin/ls", "-l", client->path, NULL) == -1) {
 		fprintf(stderr, "Execl failed\n");
 		return ;
 	}
