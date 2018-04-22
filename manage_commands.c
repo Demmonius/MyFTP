@@ -16,7 +16,8 @@ void	commands_list(t_client *client, char *command)
 			fprintf(stderr, "Dup2 failed\n");
 			return ;
 		}
-		if (execl("/bin/ls", "/bin/ls", "-l", client->path, NULL) == -1) {
+		if (execl("/bin/ls", "/bin/ls", "-l",
+			strcat(client->base_path, client->path), NULL) == -1) {
 			fprintf(stderr, "Execl failed\n");
 			return ;
 		}
@@ -29,13 +30,8 @@ void	commands_list(t_client *client, char *command)
 
 void	commands_pwd(t_client *client, char *command)
 {
-	char	cwd[1024];
-	if (getcwd(cwd, sizeof(cwd)) != NULL) {
-		write(client->client_fd, cwd, strlen(cwd));
-		write(client->client_fd, "\n", 1);
-	}
-	else
-		write(2, "Error while write cwd on client\n", strlen("Error while write cwd on client\n"));
+	dprintf(client->client_fd, client->path);
+	dprintf(client->client_fd, "\r\n");
 }
 
 void commands_quit(t_client *client, char *command)

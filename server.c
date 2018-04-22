@@ -115,7 +115,8 @@ t_client	*make_client(t_host *server)
 
 	if (client == NULL)
 		return NULL;
-	client->path = server->path;
+	client->path = "/";
+	client->base_path = server->path;
 	client->s_in_size = sizeof(client->s_in_client);
 	client->is_log = false;
 	return client;
