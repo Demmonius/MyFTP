@@ -5,8 +5,19 @@
 ** Main client C file
 */
 
+/*!
+ * @file server.c
+ */
+
 #include "client.h"
 #include "server.h"
+
+/*!
+ * @brief Get command input from the client socket
+ * 
+ * @param client Use the client to open his file descriptor
+ * @return char* Return the command with a \0 at the end
+ */
 
 char	*get_command(t_client *client)
 {
@@ -22,6 +33,12 @@ char	*get_command(t_client *client)
 	}
 }
 
+/*!
+ * @brief Function called when a client is accepted
+ * 
+ * @param client Pointer to the new client
+ * @return int Return status
+ */
 int    handle_client(t_client *client)
 {
 	char *command = NULL;
@@ -42,6 +59,14 @@ int    handle_client(t_client *client)
 	return 0;
 }
 
+
+/*!
+ * @brief Manage accept connection
+ * 
+ * @param server Host struct to accept connection
+ * @param client Setup new FD to the client
+ * @return int Return status
+ */
 int	accept_connection(t_host *server, t_client *client)
 {
 	client->client_fd = accept(server->server_fd, (struct sockaddr *) &client->s_in_client, &client->s_in_size);
@@ -78,7 +103,12 @@ int	accept_connection(t_host *server, t_client *client)
 	}
 	return fd;
 }*/
-
+/*!
+ * @brief This function alloc a t_client struct and init it
+ * @param server
+ * @see t_client
+ * @return t_client*
+ */
 t_client	*make_client(t_host *server)
 {
 	t_client	*client = malloc(sizeof(t_client));
@@ -88,8 +118,16 @@ t_client	*make_client(t_host *server)
 	client->path = server->path;
 	client->s_in_size = sizeof(client->s_in_client);
 	client->is_log = false;
+	return client;
 }
 
+/*!
+ * @brief Main function that call forks, etc...
+ * 
+ * @param ac To check len of args
+ * @param av Use to define port and Anonymous home's directory
+ * @return int Return status
+ */
 int main (int ac, char **av)
 {
 	t_client	*client = malloc(sizeof(t_client));

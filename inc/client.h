@@ -5,6 +5,10 @@
 ** Second main Header file
 */
 
+/*!
+ * @file client.h
+ */
+
 #ifndef CLIENT_H_
 	#define CLIENT_H_
 
@@ -19,18 +23,24 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+/*!
+ * @brief Typedef from s_client to t_client
+ * @typedef t_client
+ * @struct s_client
+ * @brief Client data
+ */
 typedef struct			s_client
 {
-	char            	*path;
-	int			client_fd;
-	char		*client_ip;
-	int			port;
-	socklen_t		s_in_size;
-	struct protoent	*pe;
-	struct sockaddr_in	s_in_client;
-	bool			have_to_quit;
-	bool			is_log;
-	char			*user;
+	char            	*path; //! Actual client PATH
+	int			client_fd; //! Client file descriptor
+	char			*client_ip; //! Client IP address
+	int			port; //! Actual port to use
+	socklen_t		s_in_size; //! Connection struct
+	struct protoent		*pe; //! Accept struct
+	struct sockaddr_in	s_in_client; //! Socket struct
+	bool			have_to_quit; //! Bool to know if user typed QUIT
+	bool			is_log; //! Know if the user is login
+	char			*user; //! Name of user use
 }    			t_client;
 
 #endif /* !CLIENT_H_ */
