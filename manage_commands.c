@@ -30,8 +30,9 @@ void	commands_list(t_client *client, char *command)
 
 void	commands_pwd(t_client *client, char *command)
 {
+	dprintf(client->client_fd, "257 \"");
 	dprintf(client->client_fd, client->path);
-	dprintf(client->client_fd, "\r\n");
+	dprintf(client->client_fd, "\"\r\n");
 }
 
 void commands_quit(t_client *client, char *command)
@@ -80,4 +81,9 @@ void commands_pass(t_client *client, char *command)
 	}
 	else
 		dprintf(client->client_fd, "530 Login incorrect\r\n");
+}
+
+void commands_cwd(t_client *client, char *command)
+{
+
 }

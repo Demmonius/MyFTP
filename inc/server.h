@@ -54,6 +54,7 @@ void	commands_pwd(t_client *client, char *command);
 void	commands_retr(t_client *client, char *command);
 void	commands_user(t_client *client, char *command);
 void	commands_pass(t_client *client, char *command);
+void	commands_cwd(t_client *client, char *command);
 
 /*!
  * @brief Defines number of functions pointers
