@@ -9,20 +9,22 @@
 
 void	commands_list(t_client *client, char *command)
 {
-	DIR *rep = NULL;
-	struct dirent *file = NULL;
-
-	write(1, client->path, strlen(client->path));
-	rep = opendir(client->path);
-	if (rep == NULL)
-	  return ;
-	while ((file = readdir(rep)) != NULL) {
-	  write(client->client_fd, file->d_name, strlen(file->d_name));
-	  write(client->client_fd, "\t", 1);
+	pid_t	pid = fork();
+	int	status;
+  	if (pid == 0) {
+		if (dup2(client->client_fd, 1) == -1) {
+			fprintf(stderr, "Dup2 failed\n");
+			return ;
+		}
+		if (execl("/bin/ls", "/bin/ls", "-l", client->path, NULL) == -1) {
+			fprintf(stderr, "Execl failed\n");
+			return ;
+		}
 	}
-	write(client->client_fd, "\n", 1);
-	if (closedir(rep) == -1)
-	        return ;
+  	else if (pid > 0)
+		wait(&status);
+	else
+		return ;
 }
 
 void	commands_pwd(t_client *client, char *command)
@@ -68,6 +70,18 @@ void commands_retr(t_client *client, char *command)
 
 void commands_user(t_client *client, char *command)
 {
-	parse_command(command, ' ', 1);
-	client->is_log = true;
+	client->user = parse_command(command, ' ', 1);
+	dprintf(client->client_fd, "331 Please specify the password\r\n");
+}
+
+void commands_pass(t_client *client, char *command)
+{
+	if (!client->user)
+		return ;
+	if (strcmp(client->user, "Anonymous") == 0) {
+		client->is_log = true;
+		dprintf(client->client_fd, "230 Login seccessful\r\n");
+	}
+	else
+		dprintf(client->client_fd, "530 Login incorrect\r\n");
 }
