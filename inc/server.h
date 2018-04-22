@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/sendfile.h>
 #include <fcntl.h>
 #include <dirent.h>
@@ -35,11 +36,13 @@ typedef struct s_host
 }					t_host;
 char	*parse_command(char *command, char c, int nb);
 int	manage_commands(char *command, t_client *client);
+char *toLowCase(char *str);
 void	commands_list(t_client *client, char *command);
 void	commands_quit(t_client *client, char *command);
 void	commands_pwd(t_client *client, char *command);
 void	commands_retr(t_client *client, char *command);
 void	commands_user(t_client *client, char *command);
+void	commands_pass(t_client *client, char *command);
 
 #define LEN_FUNCS 5
 

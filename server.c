@@ -37,12 +37,7 @@ int    handle_client(t_client *client)
 		command = get_command(client);
 		if (!command)
 			break ;
-		pid = fork();
-  		if (pid == 0)
-			manage_commands(command, client);
-  		else
-	  		wait(&status);
-		free(command);
+		manage_commands(command, client);
 	}
 	return 0;
 }
@@ -57,6 +52,32 @@ int	accept_connection(t_host *server, t_client *client)
 	}
 	return (0);
 }
+
+/*pid_t	make_socket(t_host *server, int *port)
+{
+	int fd = socket(AF_INET, SOCK_STREAM, server->pe->p_proto);
+	struct sockaddr_in	s_in;
+	int	p = (!port ? *port : )
+
+	s_in.sin_family = AF_INET;
+	s_in.sin_port = htons();
+	s_in.sin_addr.s_addr = INADDR_ANY;
+	if (fd == -1)
+		return -1;
+	if (bind(fd, (const struct sockaddr *)&server->s_in, sizeof(server->s_in)))
+	{
+		if (close(fd) == -1)
+			write(2, "Can't close bind\n", strlen("Can't close bind\n"));
+		return 84;
+	}
+	if (listen(fd, 42) == -1)
+	{
+		if (close(server->server_fd) == -1)
+			write(2, "Can't close listen\n", strlen("Can't close listen\n"));
+		return 84;
+	}
+	return fd;
+}*/
 
 t_client	*make_client(t_host *server)
 {
@@ -107,6 +128,8 @@ int main (int ac, char **av)
 		pid = fork();
 		if (pid == 0)
 			handle_client(new);
+		else if (pid > 0)
+			close(new->client_fd);
 		else if (pid == -1)
 			return (84);
 	}

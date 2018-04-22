@@ -13,6 +13,7 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_pwd,
 	commands_retr,
 	commands_user,
+	commands_pass,
 	
 };
 
@@ -22,6 +23,7 @@ const char commands_name[][64] = {
 	"pwd",
 	"retr",
 	"user"
+	"pass"
 };
 
 const char commands_infos[][256] = {
@@ -47,6 +49,15 @@ const char commands_infos[][256] = {
         "332 Need account for login.",
 };
 
+char *toLowCase(char *str)
+{
+	for (int i = 0; str[i]; i++) {
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
+	}
+	return (str);
+}
+
 char	*parse_command(char *command, char c, int nb)
 {
 	int count = 0;
@@ -69,8 +80,17 @@ char	*parse_command(char *command, char c, int nb)
 
 int	manage_commands(char *command, t_client *client)
 {
-	char * new = parse_command(command, ' ', 0);
+	char * new = toLowCase(parse_command(command, ' ', 0));
 
+	if (!client->is_log) {
+		if (strcmp("user", new) == 0)
+			commands_user(client, command);
+		else if (strcmp("pass", new) == 0)
+			commands_pass(client, command);
+		else
+			dprintf(client->client_fd, "530 Please login with USER and PASS\r\n");
+		return (1);
+	}
 	for (int i = 0; i < LEN_FUNCS; i++) {
 		if (strcmp(commands_name[i], new) == 0)
 			commands_func[i](client, command);

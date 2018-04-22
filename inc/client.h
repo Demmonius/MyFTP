@@ -28,8 +28,9 @@ typedef struct			s_client
 	socklen_t		s_in_size;
 	struct protoent	*pe;
 	struct sockaddr_in	s_in_client;
-	bool        have_to_quit;
-	bool        is_log;
+	bool			have_to_quit;
+	bool			is_log;
+	char			*user;
 }    			t_client;
 
 #endif /* !CLIENT_H_ */
