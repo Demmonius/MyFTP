@@ -83,7 +83,7 @@ void commands_pass(t_client *client, char *command)
 void commands_cwd(t_client *client, char *command)
 {
 	char	*dir = parse_command(command, ' ', 1);
-	char	*tmp = malloc(sizeof(char) * (strlen(client->path) + strlen(dir) + 1));
+	char	*tmp = calloc(1, sizeof(char) * (strlen(client->path) + strlen(dir) + 2));
 
 	strcpy(tmp, client->path);
 	strcat(tmp, dir);
@@ -92,4 +92,9 @@ void commands_cwd(t_client *client, char *command)
 		tmp[strlen(tmp)] = '/';
 	client->path = tmp;
 	dprintf(client->client_fd, "%s\n", commands_infos[10]);
+}
+
+void commands_cdup(t_client *client, char *command)
+{
+	command = command;
 }
