@@ -29,6 +29,7 @@ char	*get_command(t_client *client)
 		return NULL;
 	else {
 		line[strlen(line) - 1] = 0;
+		//TODO line[strlen(line) - 2] = 0;
 		return line;
 	}
 }
@@ -42,8 +43,6 @@ char	*get_command(t_client *client)
 int    handle_client(t_client *client)
 {
 	char *command = NULL;
-	pid_t	pid;
-	int	status;
 
 	client->is_log = false;
 	client->have_to_quit = false;
@@ -115,7 +114,7 @@ t_client	*make_client(t_host *server)
 
 	if (client == NULL)
 		return NULL;
-	client->path = "/";
+	client->path = strdup("/");
 	client->base_path = server->path;
 	client->s_in_size = sizeof(client->s_in_client);
 	client->is_log = false;
