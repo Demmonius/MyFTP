@@ -27,11 +27,10 @@ char	*get_command(t_client *client)
 
 	if ((getline(&line, &size, fp) == -1))
 		return NULL;
-	else {
-		line[strlen(line) - 1] = 0;
-		//TODO line[strlen(line) - 2] = 0;
-		return line;
-	}
+	for (int i = 0; line[i]; i++)
+		if (line[i] == '\r' || line[i] == '\n')
+			line[i] = '\0';
+	return line;
 }
 
 /*!
@@ -66,42 +65,35 @@ int    handle_client(t_client *client)
  * @param client Setup new FD to the client
  * @return int Return status
  */
-int	accept_connection(t_host *server, t_client *client)
+int	accept_connection(int fd, t_client *client)
 {
-	client->client_fd = accept(server->server_fd, (struct sockaddr *) &client->s_in_client, &client->s_in_size);
-	if (client->client_fd == -1)
-	{
-		close(server->server_fd);
+	int new_fd  = accept(fd, (struct sockaddr *) &client->s_in_client, &client->s_in_size);
+
+	if (new_fd == -1)
 		return 84;
-	}
-	return (0);
+	return (new_fd);
 }
 
-/*pid_t	make_socket(t_host *server, int *port)
+pid_t	make_socket(int *port)
 {
-	int fd = socket(AF_INET, SOCK_STREAM, server->pe->p_proto);
+	struct protoent *pe = getprotobyname("TCP");
+	int fd = socket(AF_INET, SOCK_STREAM, pe->p_proto);
+	int p2;
 	struct sockaddr_in	s_in;
-	int	p = (!port ? *port : )
 
+	do {
+	p2 = rand() % 255;
 	s_in.sin_family = AF_INET;
-	s_in.sin_port = htons();
+	s_in.sin_port = htons((255 * 256) + p2);
 	s_in.sin_addr.s_addr = INADDR_ANY;
-	if (fd == -1)
-		return -1;
-	if (bind(fd, (const struct sockaddr *)&server->s_in, sizeof(server->s_in)))
-	{
-		if (close(fd) == -1)
-			write(2, "Can't close bind\n", strlen("Can't close bind\n"));
-		return 84;
-	}
+
+	} while(bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
 	if (listen(fd, 42) == -1)
-	{
-		if (close(server->server_fd) == -1)
-			write(2, "Can't close listen\n", strlen("Can't close listen\n"));
 		return 84;
-	}
+	*port = (255 * 256) + p2;
 	return fd;
-}*/
+}
+
 /*!
  * @brief This function alloc a t_client struct and init it
  * @param server
@@ -118,6 +110,7 @@ t_client	*make_client(t_host *server)
 	client->base_path = server->path;
 	client->s_in_size = sizeof(client->s_in_client);
 	client->is_log = false;
+	client->second_fd = -1;
 	return client;
 }
 
@@ -136,6 +129,7 @@ int main (int ac, char **av)
 
 	if (ac != 3)
 		return (84);
+	srand(time(NULL));
 	server->port = atoi(av[1]);
 	server->path = av[2];
 	server->pe = getprotobyname("TCP");
@@ -161,7 +155,8 @@ int main (int ac, char **av)
 	}
 	while (42) {
 		t_client *new = make_client(server);
-		if (accept_connection(server, new) == 84)
+		new->client_fd = accept_connection(server->server_fd, new);
+		if (new->client_fd == 84)
 			return (84);
 		pid = fork();
 		if (pid == 0)
