@@ -5,29 +5,27 @@
 ** Command gestion C file
 */
 
+#define _GNU_SOURCE
 #include "server.h"
 
 void	commands_list(t_client *client, char *command)
 {
-	pid_t	pid = fork();
+	const char	*const cmd = " ls -l %s | sed 1d";
+	const int	save = dup(1);
+	char		*full_cmd;
 	int	status;
 
 	command = command;
-  	if (pid == 0) {
-		if (dup2(client->client_fd, 1) == -1) {
-			fprintf(stderr, "Dup2 failed\n");
-			return ;
-		}
-		if (execl("/bin/ls", "/bin/ls", "-l",
-			strcat(client->base_path, client->path), NULL) == -1) {
-			fprintf(stderr, "Execl failed\n");
-			return ;
-		}
-	}
-  	else if (pid > 0)
-		wait(&status);
-	else
+	if (dup2(client->client_fd, 1) == -1) {
+		fprintf(stderr, "Dup2 failed\n");
 		return ;
+	}
+	asprintf(&full_cmd, cmd, client->path);
+	if (system(full_cmd)) {
+		fprintf(stderr, "Execl failed\n");
+		return ;
+	}
+	dup2(save, 1);
 }
 
 void	commands_pwd(t_client *client, char *command)
@@ -71,7 +69,6 @@ void commands_pass(t_client *client, char *command)
 	command = command;
 	if (!client->user)
 		return ;
-	printf("%s\n", client->user);
 	if (strcmp(client->user, "Anonymous") == 0) {
 		client->is_log = true;
 		dprintf(client->client_fd, "230 Login seccessful\n");
