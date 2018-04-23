@@ -46,7 +46,9 @@ typedef struct s_host
 
 char	*parse_command(char *command, char c, int nb);
 int	manage_commands(char *command, t_client *client);
-char	*toLowCase(char *str);
+int	accept_connection(int fd, t_client *client);
+char	*to_lowcase(char *str);
+pid_t	make_socket(int *port);
 void	commands_list(t_client *client, char *command);
 void	commands_quit(t_client *client, char *command);
 void	commands_pwd(t_client *client, char *command);
@@ -54,15 +56,16 @@ void	commands_retr(t_client *client, char *command);
 void	commands_user(t_client *client, char *command);
 void	commands_pass(t_client *client, char *command);
 void	commands_cwd(t_client *client, char *command);
+void	commands_pasv(t_client *client, char *command);
 
 /*!
  * @brief Defines number of functions pointers
  * 
  */
-#define LEN_FUNCS 7
+#define LEN_FUNCS 8
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];
-extern const char commands_infos[15][256];
+extern const char commands_infos[16][256];
 
 #endif /* !SERVER_H_ */

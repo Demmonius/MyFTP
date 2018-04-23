@@ -10,22 +10,32 @@
 
 void	commands_list(t_client *client, char *command)
 {
-	const char	*const cmd = " ls -l %s | sed 1d";
+	const char	*const cmd = " ls -l %s%s | sed 1d";
 	const int	save = dup(1);
 	char		*full_cmd;
-	int	status;
 
 	command = command;
-	if (dup2(client->client_fd, 1) == -1) {
+
+	if (client->second_fd == -1) {
+		dprintf(client->client_fd, commands_infos[14]);
+		return ;
+	}
+	client->second_fd = accept_connection(client->second_fd, client);
+	if (client->second_fd == 84)
+		return ;
+	if (dup2(client->second_fd, 1) == -1) {
 		fprintf(stderr, "Dup2 failed\n");
 		return ;
 	}
-	asprintf(&full_cmd, cmd, client->path);
-	if (system(full_cmd)) {
-		fprintf(stderr, "Execl failed\n");
+	asprintf(&full_cmd, cmd, client->base_path, client->path);
+	printf("%s\n", full_cmd);
+	if (system(full_cmd) == -1) {
+		dup2(save, 1);
+		close(client->second_fd);
 		return ;
 	}
 	dup2(save, 1);
+	close(client->second_fd);
 }
 
 void	commands_pwd(t_client *client, char *command)
@@ -89,4 +99,14 @@ void commands_cwd(t_client *client, char *command)
 		tmp[strlen(tmp)] = '/';
 	client->path = tmp;
 	dprintf(client->client_fd, "%s\n", commands_infos[10]);
+}
+
+void commands_pasv(t_client *client, char *command)
+{
+	int	port = -1;
+
+	client->second_fd = (client->second_fd == -1 ? make_socket(&port) : client->second_fd);
+	command = command;
+	port -= (256 * 255);
+	dprintf(client->client_fd, commands_infos[8], "127,0,0,1", port);
 }
