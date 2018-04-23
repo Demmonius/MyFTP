@@ -11,12 +11,15 @@ void	commands_list(t_client *client, char *command)
 {
 	pid_t	pid = fork();
 	int	status;
+
+	command = command;
   	if (pid == 0) {
 		if (dup2(client->client_fd, 1) == -1) {
 			fprintf(stderr, "Dup2 failed\n");
 			return ;
 		}
-		if (execl("/bin/ls", "/bin/ls", "-l", client->path, NULL) == -1) {
+		if (execl("/bin/ls", "/bin/ls", "-l",
+			strcat(client->base_path, client->path), NULL) == -1) {
 			fprintf(stderr, "Execl failed\n");
 			return ;
 		}
@@ -29,31 +32,23 @@ void	commands_list(t_client *client, char *command)
 
 void	commands_pwd(t_client *client, char *command)
 {
-	char	cwd[1024];
-	if (getcwd(cwd, sizeof(cwd)) != NULL) {
-		write(client->client_fd, cwd, strlen(cwd));
-		write(client->client_fd, "\n", 1);
-	}
-	else
-		write(2, "Error while write cwd on client\n", strlen("Error while write cwd on client\n"));
+	command = command;
+	client = client;
+	dprintf(client->client_fd, "257 \"");
+	dprintf(client->client_fd, client->path);
+	dprintf(client->client_fd, "\"\r\n");
 }
 
 void commands_quit(t_client *client, char *command)
 {
+	command = command;
 	client->have_to_quit = true;
 }
 
 void commands_retr(t_client *client, char *command)
 {
 	char *arg = parse_command(command, ' ', 0);
-	struct stat file_stat;
-	ssize_t len;
-	int peer_socket;
 	int fd;
-	off_t offset;
-	char file_size[256];
-	int remain_data;
-	int sent_bytes = 0;
 
 	fd = open(arg, O_RDONLY);
         if (fd == -1)
@@ -61,11 +56,8 @@ void commands_retr(t_client *client, char *command)
                 fprintf(stderr, "Error opening file --> %s\n", strerror(errno));
 		return ;
         }
-        if (fstat(fd, &file_stat) < 0)
-        {
-                fprintf(stderr, "Error fstat --> %s\n", strerror(errno));
-		return ;
-        }
+	dprintf(client->client_fd, "Hello, pls pass later !\r\n");
+	close(fd);
 }
 
 void commands_user(t_client *client, char *command)
@@ -76,12 +68,28 @@ void commands_user(t_client *client, char *command)
 
 void commands_pass(t_client *client, char *command)
 {
+	command = command;
 	if (!client->user)
 		return ;
+	printf("%s\n", client->user);
 	if (strcmp(client->user, "Anonymous") == 0) {
 		client->is_log = true;
-		dprintf(client->client_fd, "230 Login seccessful\r\n");
+		dprintf(client->client_fd, "230 Login seccessful\n");
 	}
 	else
-		dprintf(client->client_fd, "530 Login incorrect\r\n");
+		dprintf(client->client_fd, "530 Login incorrect\n");
+}
+
+void commands_cwd(t_client *client, char *command)
+{
+	char	*dir = parse_command(command, ' ', 1);
+	char	*tmp = malloc(sizeof(char) * (strlen(client->path) + strlen(dir) + 1));
+
+	strcpy(tmp, client->path);
+	strcat(tmp, dir);
+	free(client->path);
+	if (dir[strlen(dir)] != '/')
+		tmp[strlen(tmp)] = '/';
+	client->path = tmp;
+	dprintf(client->client_fd, "%s\n", commands_infos[10]);
 }

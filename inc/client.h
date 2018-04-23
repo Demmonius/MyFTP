@@ -32,6 +32,7 @@
 typedef struct			s_client
 {
 	char            	*path; //! Actual client PATH
+	char			*base_path; //! Base from server
 	int			client_fd; //! Client file descriptor
 	char			*client_ip; //! Client IP address
 	int			port; //! Actual port to use
