@@ -14,6 +14,7 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_retr,
 	commands_user,
 	commands_pass,
+	commands_cwd,
 	
 };
 
@@ -22,8 +23,9 @@ const char commands_name[][64] = {
 	"quit",
 	"pwd",
 	"retr",
-	"user"
-	"pass"
+	"user",
+	"pass",
+	"cwd"
 };
 
 const char commands_infos[][256] = {
