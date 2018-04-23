@@ -96,5 +96,9 @@ void commands_cwd(t_client *client, char *command)
 
 void commands_cdup(t_client *client, char *command)
 {
-	command = command;
+	char	*new;
+	for (int i = 0; client->path[i]; i++) {
+		new = realloc(new, i + 1);
+		new[i] = client->path[i];
+	}
 }
