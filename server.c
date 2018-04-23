@@ -27,11 +27,10 @@ char	*get_command(t_client *client)
 
 	if ((getline(&line, &size, fp) == -1))
 		return NULL;
-	else {
-		line[strlen(line) - 1] = 0;
-		//TODO line[strlen(line) - 2] = 0;
-		return line;
-	}
+	for (int i = 0; line[i]; i++)
+		if (line[i] == '\r' || line[i] == '\n')
+			line[i] = '\0';
+	return line;
 }
 
 /*!

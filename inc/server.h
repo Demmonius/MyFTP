@@ -29,7 +29,6 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include "client.h"
-
 /*!
  * @brief Typedef from s_host to t_host
  * @typedef t_host
