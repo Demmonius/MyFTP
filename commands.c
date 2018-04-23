@@ -49,6 +49,7 @@ const char commands_infos[][256] = {
         "257 %s created.",
         "331 User name okay, need password.",
         "332 Need account for login.",
+	"500 Unknown command.\n"
 };
 
 char *toLowCase(char *str)
@@ -83,6 +84,7 @@ char	*parse_command(char *command, char c, int nb)
 int	manage_commands(char *command, t_client *client)
 {
 	char * new = toLowCase(parse_command(command, ' ', 0));
+	bool status = false;
 
 	if (!client->is_log) {
 		if (strcmp("user", new) == 0)
@@ -93,10 +95,14 @@ int	manage_commands(char *command, t_client *client)
 			dprintf(client->client_fd, "530 Please login with USER and PASS\r\n");
 		return (1);
 	}
-	for (int i = 0; i < LEN_FUNCS; i++) {
-		if (strcmp(commands_name[i], new) == 0)
+	for (int i = 0; i < LEN_FUNCS && status == 0; i++) {
+		if (strcmp(commands_name[i], new) == 0) {
 			commands_func[i](client, command);
+			status = true;
+		}
 	}
+	if (!status)
+		dprintf(client->client_fd, commands_infos[14]);
 	free(new);
 	return (0);
 }
