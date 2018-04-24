@@ -25,8 +25,10 @@ char	*get_command(t_client *client)
 	size_t size;
 	FILE* fp = fdopen(client->client_fd, "r");
 
-	if ((getline(&line, &size, fp) == -1))
+	if (getline(&line, &size, fp) == -1) {
+		close(client->client_fd);
 		return NULL;
+	}
 	for (int i = 0; line[i]; i++)
 		if (line[i] == '\r' || line[i] == '\n')
 			line[i] = '\0';
@@ -51,7 +53,7 @@ int    handle_client(t_client *client)
 	while (!client->have_to_quit) {
 		command = get_command(client);
 		if (!command)
-			break ;
+			return 0;
 		manage_commands(command, client);
 	}
 	return 0;
@@ -159,8 +161,12 @@ int main (int ac, char **av)
 		if (new->client_fd == 84)
 			return (84);
 		pid = fork();
-		if (pid == 0)
+		if (pid == 0) {
 			handle_client(new);
+			close(new->client_fd);
+			free(new);
+			return 0;
+		}
 		else if (pid > 0)
 			close(new->client_fd);
 		else if (pid == -1)
