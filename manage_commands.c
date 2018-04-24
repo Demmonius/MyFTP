@@ -14,15 +14,16 @@ void	commands_list(t_client *client, char *command)
 	const int	save = dup(1);
 	char		*full_cmd;
 
-	command = command;
-
-	if (client->second_fd == -1) {
+	if (client->client_status == UNSET) {
 		dprintf(client->client_fd, commands_infos[14]);
 		return ;
 	}
-	client->second_fd = accept_connection(client->second_fd, client);
-	if (client->second_fd == 84)
+	dprintf(client->client_fd, commands_infos[2]);
+	client->second_fd = (client->client_status == PASV ? accept_connection(client->second_fd, client) : connect_to_client(client));
+	if (client->second_fd == 84) {
+		perror("Fd accept or connection: ");
 		return ;
+	}
 	if (dup2(client->second_fd, 1) == -1) {
 		fprintf(stderr, "Dup2 failed\n");
 		return ;
@@ -36,6 +37,9 @@ void	commands_list(t_client *client, char *command)
 	}
 	dup2(save, 1);
 	close(client->second_fd);
+	dprintf(client->client_fd, commands_infos[7]);
+	client->second_fd = -1;
+	client->client_status = UNSET;
 }
 
 void	commands_pwd(t_client *client, char *command)
@@ -105,8 +109,52 @@ void commands_pasv(t_client *client, char *command)
 {
 	int	port = -1;
 
-	client->second_fd = (client->second_fd == -1 ? make_socket(&port) : client->second_fd);
+	client->second_fd = make_socket(&port);
 	command = command;
 	port -= (256 * 255);
 	dprintf(client->client_fd, commands_infos[8], "127,0,0,1", port);
+	client->client_status = PASV;
+}
+
+int connect_to_client(t_client *client)
+{
+	fflush(stdout);
+	struct protoent *pe = getprotobyname("TCP");
+	int fd = socket(AF_INET, SOCK_STREAM, pe->p_proto);
+	struct sockaddr_in	s_in;
+
+	s_in.sin_family = AF_INET;
+	s_in.sin_port = htons(client->client_port);
+	s_in.sin_addr.s_addr = inet_addr(client->client_ip);
+	if (connect(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1) {
+		perror("Connect: ");
+		return 84;
+	}
+	return fd;
+}
+
+void commands_port(t_client *client, char *command)
+{
+	char	*arg = parse_command(command, ' ', 1);
+	char	*ips[] = {
+		parse_command(arg, ',', 0),
+		parse_command(arg, ',', 1),
+		parse_command(arg, ',', 2),
+		parse_command(arg, ',', 3)
+	};
+	char	*ps[] = {
+		parse_command(arg, ',', 4),
+		parse_command(arg, ',', 5)
+	};
+
+	if (!client->client_ip)
+		free(client->client_ip);
+	asprintf(&client->client_ip, "%s.%s.%s.%s", ips[0], ips[1], ips[2], ips[3]);
+	client->client_port = (atoi(ps[0]) * 256) + atoi(ps[1]);
+	dprintf(client->client_fd, commands_infos[3]);
+	client->client_status = ACTIV;
+	for (int i = 0; i < 4; i++)
+		free(ips[i]);
+	for (int i = 0; i < 2; i++)
+		free(ps[i]);
 }

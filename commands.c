@@ -16,6 +16,7 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_pass,
 	commands_cwd,
 	commands_pasv,
+	commands_port,
 	
 };
 
@@ -28,13 +29,14 @@ const char commands_name[][64] = {
 	"pass",
 	"cwd",
 	"pasv",
+	"port",
 };
 
 const char commands_infos[][256] = {
 	"120 Service ready in nnn minutes.",
         "125 Data connection already open; transfer starting.",
-        "150 File status okay; about to open data connection.",
-        "200 Command okay.",
+        "150 File status okay; about to open data connection.\n",
+        "200 Command okay.\n",
         "214 Help message.\n\
             On how to use the server or the meaning of a particular\n\
             non-standard command.  This reply is useful only to the\n\
@@ -42,9 +44,7 @@ const char commands_infos[][256] = {
         "220 Service ready for new user.",
         "221 Service closing control connection. \
             Logged out if appropriate.",
-        "226 Closing data connection.\n\
-            Requested file action successful (for example, file\n\
-            transfer or file abort).",
+        "226 Directory send OK.\n",
         "227 Entering Passive Mode (%s,255,%d).\n",
         "230 User logged in, proceed.",
         "250 Requested file action okay, completed.",
