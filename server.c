@@ -76,7 +76,7 @@ int	accept_connection(int fd, t_client *client)
 	return (new_fd);
 }
 
-pid_t	make_socket(int *port)
+int	make_socket(int *port)
 {
 	struct protoent *pe = getprotobyname("TCP");
 	int fd = socket(AF_INET, SOCK_STREAM, pe->p_proto);
@@ -90,8 +90,10 @@ pid_t	make_socket(int *port)
 	s_in.sin_addr.s_addr = INADDR_ANY;
 
 	} while(bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
-	if (listen(fd, 42) == -1)
+	if (listen(fd, 1) == -1) {
+		perror("Listen: ");
 		return 84;
+	}
 	*port = (255 * 256) + p2;
 	return fd;
 }
@@ -113,6 +115,9 @@ t_client	*make_client(t_host *server)
 	client->s_in_size = sizeof(client->s_in_client);
 	client->is_log = false;
 	client->second_fd = -1;
+	client->client_ip = NULL;
+	client->client_port = -1;
+	client->client_status = UNSET;
 	return client;
 }
 

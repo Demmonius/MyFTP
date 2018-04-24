@@ -24,6 +24,12 @@
 #include <stdbool.h>
 #include <time.h>
 
+
+enum port_status {
+	ACTIV,
+	PASV,
+	UNSET
+};
 /*!
  * @brief Typedef from s_client to t_client
  * @typedef t_client
@@ -35,8 +41,10 @@ typedef struct			s_client
 	char            	*path; //! Actual client PATH
 	char			*base_path; //! Base from server
 	int			second_fd; //! Second socket open
+	char			*client_ip; //! Active mode IP client
+	int			client_port; //! Active mode PORT client
+	enum port_status	client_status; //! State of actual client port
 	int			client_fd; //! Client file descriptor
-	char			*client_ip; //! Client IP address
 	int			port; //! Actual port to use
 	socklen_t		s_in_size; //! Connection struct
 	struct protoent		*pe; //! Accept struct
