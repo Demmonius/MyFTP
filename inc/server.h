@@ -68,6 +68,6 @@ void 	commands_port(t_client *client, char *command);
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];
-extern const char commands_infos[16][256];
+extern const char commands_infos[17][256];
 
 #endif /* !SERVER_H_ */
