@@ -25,8 +25,10 @@ char	*get_command(t_client *client)
 	size_t size;
 	FILE* fp = fdopen(client->client_fd, "r");
 
-	if ((getline(&line, &size, fp) == -1))
+	if (getline(&line, &size, fp) == -1) {
+		close(client->client_fd);
 		return NULL;
+	}
 	for (int i = 0; line[i]; i++)
 		if (line[i] == '\r' || line[i] == '\n')
 			line[i] = '\0';
@@ -51,7 +53,7 @@ int    handle_client(t_client *client)
 	while (!client->have_to_quit) {
 		command = get_command(client);
 		if (!command)
-			break ;
+			return 0;
 		manage_commands(command, client);
 	}
 	return 0;
@@ -74,7 +76,7 @@ int	accept_connection(int fd, t_client *client)
 	return (new_fd);
 }
 
-pid_t	make_socket(int *port)
+int	make_socket(int *port)
 {
 	struct protoent *pe = getprotobyname("TCP");
 	int fd = socket(AF_INET, SOCK_STREAM, pe->p_proto);
@@ -88,8 +90,10 @@ pid_t	make_socket(int *port)
 	s_in.sin_addr.s_addr = INADDR_ANY;
 
 	} while(bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
-	if (listen(fd, 42) == -1)
+	if (listen(fd, 1) == -1) {
+		perror("Listen: ");
 		return 84;
+	}
 	*port = (255 * 256) + p2;
 	return fd;
 }
@@ -111,6 +115,9 @@ t_client	*make_client(t_host *server)
 	client->s_in_size = sizeof(client->s_in_client);
 	client->is_log = false;
 	client->second_fd = -1;
+	client->client_ip = NULL;
+	client->client_port = -1;
+	client->client_status = UNSET;
 	return client;
 }
 
@@ -159,8 +166,12 @@ int main (int ac, char **av)
 		if (new->client_fd == 84)
 			return (84);
 		pid = fork();
-		if (pid == 0)
+		if (pid == 0) {
 			handle_client(new);
+			close(new->client_fd);
+			free(new);
+			return 0;
+		}
 		else if (pid > 0)
 			close(new->client_fd);
 		else if (pid == -1)
