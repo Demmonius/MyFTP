@@ -118,7 +118,7 @@ void commands_pass(t_client *client, char *command)
 void commands_cwd(t_client *client, char *command)
 {
 	char	*dir = parse_command(command, ' ', 1);
-	char	*tmp = malloc(sizeof(char) * (strlen(client->path) + strlen(dir) + 1));
+	char	*tmp = calloc(1, sizeof(char) * (strlen(client->path) + strlen(dir) + 2));
 
 	strcpy(tmp, client->path);
 	strcat(tmp, dir);
@@ -129,6 +129,7 @@ void commands_cwd(t_client *client, char *command)
 	dprintf(client->client_fd, "%s\n", commands_infos[10]);
 }
 
+<<<<<<< HEAD
 void commands_pasv(t_client *client, char *command)
 {
 	int	port = -1;
@@ -232,4 +233,13 @@ void commands_stor(t_client *client, char *command)
 	}
 	printf(buff);
 	free(filename);
+=======
+void commands_cdup(t_client *client, char *command)
+{
+	char	*new;
+	for (int i = 0; client->path[i]; i++) {
+		new = realloc(new, i + 1);
+		new[i] = client->path[i];
+	}
+>>>>>>> feature/cdup
 }

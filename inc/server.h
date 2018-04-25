@@ -60,6 +60,7 @@ void	commands_cwd(t_client *client, char *command);
 void	commands_pasv(t_client *client, char *command);
 void 	commands_port(t_client *client, char *command);
 void	commands_stor(t_client *client, char *command);
+void	commands_cdup(t_client *client, char *command);
 
 /*!
  * @brief Defines number of functions pointers

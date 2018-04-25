@@ -18,6 +18,8 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_pasv,
 	commands_port,
 	commands_stor,	
+	commands_cdup,
+	
 };
 
 const char commands_name[][64] = {
@@ -31,6 +33,7 @@ const char commands_name[][64] = {
 	"pasv",
 	"port",
 	"stor",
+	"cdup"
 };
 
 const char commands_infos[][256] = {
