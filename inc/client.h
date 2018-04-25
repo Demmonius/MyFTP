@@ -49,7 +49,7 @@ typedef struct			s_client
 	socklen_t		s_in_size; //! Connection struct
 	struct protoent		*pe; //! Accept struct
 	struct sockaddr_in	s_in_client; //! Socket struct
-	bool			have_to_quit; //! Bool to know if user typed QUIT
+	bool			have_to_quit; //! Bool for QUIT
 	bool			is_log; //! Know if the user is login
 	char			*user; //! Name of user use
 }    			t_client;

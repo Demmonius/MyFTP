@@ -11,7 +11,7 @@
 
 #ifndef SERVER_H_
 	#define SERVER_H_
-	
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/types.h>
@@ -40,7 +40,7 @@ typedef struct s_host
 	struct protoent			*pe; /*! Protocal struct data */
 	struct sockaddr_in		s_in; /*! Socket struct  */
 	int				port; /*! Actual port to use */
-	int				server_fd; /*! Server's file descriptor */
+	int				server_fd; /*! Server's fd*/
 	char				*path; /*! Basic path to begin */
 }					t_host;
 
@@ -64,9 +64,8 @@ void	commands_cdup(t_client *client, char *command);
 
 /*!
  * @brief Defines number of functions pointers
- * 
  */
-#define LEN_FUNCS 10
+#define LEN_FUNCS 11
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];
