@@ -17,6 +17,8 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_cwd,
 	commands_pasv,
 	commands_port,
+	commands_stor,	
+	commands_cdup,
 	
 };
 
@@ -30,6 +32,8 @@ const char commands_name[][64] = {
 	"cwd",
 	"pasv",
 	"port",
+	"stor",
+	"cdup"
 };
 
 const char commands_infos[][256] = {
@@ -52,7 +56,8 @@ const char commands_infos[][256] = {
         "331 User name okay, need password.",
         "332 Need account for login.",
 	"425 Use PORT or PASV first.\n",
-	"500 Unknown command.\n"
+	"500 Unknown command.\n",
+	"550 Failed to open file\n",
 };
 
 char *to_lowcase(char *str)
@@ -89,6 +94,7 @@ int	manage_commands(char *command, t_client *client)
 	char * new = to_lowcase(parse_command(command, ' ', 0));
 	bool status = false;
 
+	printf("[%d]: %s\n", client->client_fd, command);
 	if (!client->is_log) {
 		if (strcmp("user", new) == 0)
 			commands_user(client, command);
