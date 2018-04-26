@@ -49,7 +49,11 @@ int	manage_commands(char *command, t_client *client);
 int	accept_connection(int fd, t_client *client);
 int	connect_to_client(t_client *client);
 char	*to_lowcase(char *str);
+t_host	*init_host(char **av);
+t_host	*listen_sock(t_host *server);
+int	handle_client(t_client *client);
 int	make_socket(int *port);
+t_client	*make_client(t_host *server);
 void	commands_list(t_client *client, char *command);
 void	commands_quit(t_client *client, char *command);
 void	commands_pwd(t_client *client, char *command);
@@ -65,7 +69,7 @@ void	commands_cdup(t_client *client, char *command);
 /*!
  * @brief Defines number of functions pointers
  */
-#define LEN_FUNCS 11
+#define LEN_FUNCS 10
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];

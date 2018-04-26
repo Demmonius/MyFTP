@@ -19,12 +19,13 @@ SRCS	= ./src/commands/cwd.c \
 	  ./src/commands/stor.c \
 	  ./src/commands.c \
 	  ./src/manage_commands.c \
+	  ./src/inits.c	\
 	  ./src/server.c
 
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I ./inc/
-CFLAGS += -Wall -Wextra
+CFLAGS += -Wall -Wextra -g3
 
 all: $(NAME)
 

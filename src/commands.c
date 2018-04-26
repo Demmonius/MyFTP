@@ -18,7 +18,6 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_pasv,
 	commands_port,
 	commands_stor,
-	commands_cdup,
 	
 };
 
@@ -33,7 +32,6 @@ const char commands_name[][64] = {
 	"pasv",
 	"port",
 	"stor",
-	"cdup",
 };
 
 const char commands_infos[][256] = {
@@ -69,12 +67,24 @@ char *to_lowcase(char *str)
 	return (str);
 }
 
+int	c_count(char *str, char c)
+{
+	int n = 0;
+
+	for(int i = 0; str[i]; i++)
+		if (str[i] == c)
+			n++;
+	return n;
+}
+
 char	*parse_command(char *command, char c, int nb)
 {
 	int count = 0;
 	int size = 2;
 	char *new = malloc(sizeof(char) * size);
 
+	if (c_count(command, c) < nb)
+		return NULL;
 	while (command && nb > count) {
 		if (*command == c)
 			count++;
@@ -86,7 +96,22 @@ char	*parse_command(char *command, char c, int nb)
 		command++;
 	}
 	new[size - 2] = '\0';
+	new[size - 1] = '\0';
 	return new;
+}
+
+int manage_log(t_client *client, char *new, char *command)
+{
+	if (!client->is_log) {
+		if (strcmp("user", new) == 0)
+			commands_user(client, command);
+		else if (strcmp("pass", new) == 0)
+			commands_pass(client, command);
+		else
+			dprintf(client->client_fd, "530 Please login with USER and PASS\r\n");
+		return 1;
+	}
+	return 0;
 }
 
 int	manage_commands(char *command, t_client *client)
@@ -95,15 +120,8 @@ int	manage_commands(char *command, t_client *client)
 	bool status = false;
 
 	printf("[%d]: %s\n", client->client_fd, command);
-	if (!client->is_log) {
-		if (strcmp("user", new) == 0)
-			commands_user(client, command);
-		else if (strcmp("pass", new) == 0)
-			commands_pass(client, command);
-		else
-			dprintf(client->client_fd, "530 Please login with USER and PASS\r\n");
-		return (1);
-	}
+	if (manage_log(client, new, command) == 1)
+		return 84;
 	for (int i = 0; i < LEN_FUNCS && status == 0; i++) {
 		if (strcmp(commands_name[i], new) == 0) {
 			commands_func[i](client, command);

@@ -43,18 +43,14 @@ void commands_stor(t_client *client, char *command)
 		return ;
 	}
 	dprintf(client->client_fd, commands_infos[2]);
-	client->second_fd = (client->client_status == PASV ? accept_connection(client->second_fd, client) : connect_to_client(client));
+	client->second_fd = (client->client_status == PASV ?
+		accept_connection(client->second_fd, client) :
+		connect_to_client(client));
 	if (client->second_fd == 84) {
-		perror("Fd accept or connection: ");
 		return ;
 	}
 	arg = parse_command(command, ' ', 1);
 	asprintf(&filename, "%s%s%s", client->base_path, client->path, arg);
-	char *buff = read_file(filename);
-	if (!buff) {
-		perror("Read file: ");
-		return ;
-	}
-	printf(buff);
 	free(filename);
+	free(arg);
 }

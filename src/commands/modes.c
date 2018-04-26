@@ -21,7 +21,6 @@ void commands_pasv(t_client *client, char *command)
 
 int connect_to_client(t_client *client)
 {
-	fflush(stdout);
 	struct protoent *pe = getprotobyname("TCP");
 	int fd = socket(AF_INET, SOCK_STREAM, pe->p_proto);
 	struct sockaddr_in	s_in;
@@ -34,6 +33,14 @@ int connect_to_client(t_client *client)
 		return 84;
 	}
 	return fd;
+}
+
+void make_port(t_client *client, char **ips, char **ps)
+{
+	asprintf(&client->client_ip, "%s.%s.%s.%s", ips[0], ips[1], ips[2], ips[3]);
+	client->client_port = (atoi(ps[0]) * 256) + atoi(ps[1]);
+	dprintf(client->client_fd, commands_infos[3]);
+	client->client_status = ACTIV;
 }
 
 void commands_port(t_client *client, char *command)
@@ -52,12 +59,10 @@ void commands_port(t_client *client, char *command)
 
 	if (!client->client_ip)
 		free(client->client_ip);
-	asprintf(&client->client_ip, "%s.%s.%s.%s", ips[0], ips[1], ips[2], ips[3]);
-	client->client_port = (atoi(ps[0]) * 256) + atoi(ps[1]);
-	dprintf(client->client_fd, commands_infos[3]);
-	client->client_status = ACTIV;
+	make_port(client, ips, ps);
 	for (int i = 0; i < 4; i++)
 		free(ips[i]);
 	for (int i = 0; i < 2; i++)
 		free(ps[i]);
+	free(arg);
 }

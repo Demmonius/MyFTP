@@ -8,16 +8,11 @@
 #define _GNU_SOURCE
 #include "server.h"
 
-void	commands_list(t_client *client, char *command)
+static void	main_list(t_client *client, int save)
 {
 	const char	*const cmd = "ls -l %s%s | sed 1d";
-	const int	save = dup(1);
 	char		*full_cmd;
 
-	if (client->client_status == UNSET) {
-		dprintf(client->client_fd, commands_infos[14]);
-		return ;
-	}
 	dprintf(client->client_fd, commands_infos[2]);
 	client->second_fd = (client->client_status == PASV ? accept_connection(client->second_fd, client) : connect_to_client(client));
 	if (client->second_fd == 84) {
@@ -34,6 +29,18 @@ void	commands_list(t_client *client, char *command)
 		close(client->second_fd);
 		return ;
 	}
+}
+
+void	commands_list(t_client *client, char *command)
+{
+	const int	save = dup(1);
+
+	if (client->client_status == UNSET) {
+		dprintf(client->client_fd, commands_infos[14]);
+		return ;
+	}
+	(void)command;
+	main_list(client, save);
 	dup2(save, 1);
 	close(client->second_fd);
 	dprintf(client->client_fd, commands_infos[7]);
