@@ -47,8 +47,7 @@ int    handle_client(t_client *client)
 
 	client->is_log = false;
 	client->have_to_quit = false;
-	if (write(client->client_fd, commands_infos[5], strlen(commands_infos[5])) == -1 ||
-		write(client->client_fd, "\n", 1) == -1)
+	if (dprintf(client->client_fd, commands_infos[5]) == 0)
 		return 84;
 	while (!client->have_to_quit) {
 		command = get_command(client);

@@ -11,7 +11,8 @@
 void commands_cwd(t_client *client, char *command)
 {
 	char	*dir = parse_command(command, ' ', 1);
-	char	*tmp = calloc(1, sizeof(char) * (strlen(client->path) + strlen(dir) + 2));
+	char	*tmp = calloc(1, sizeof(char) *
+		(strlen(client->path) + strlen(dir) + 2));
 
 	strcpy(tmp, client->path);
 	strcat(tmp, dir);

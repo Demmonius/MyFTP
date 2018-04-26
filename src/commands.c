@@ -43,7 +43,7 @@ const char commands_infos[][256] = {
             On how to use the server or the meaning of a particular\n\
             non-standard command.  This reply is useful only to the\n\
             human user.",
-        "220 Service ready for new user.",
+        "220 Service ready for new user.\n",
         "221 Service closing control connection. \
             Logged out if appropriate.",
         "226 Directory send OK.\n",
@@ -56,6 +56,7 @@ const char commands_infos[][256] = {
 	"425 Use PORT or PASV first.\n",
 	"500 Unknown command.\n",
 	"550 Failed to open file\n",
+	"530 Please login with USER and PASS\n"
 };
 
 char *to_lowcase(char *str)
@@ -108,7 +109,7 @@ int manage_log(t_client *client, char *new, char *command)
 		else if (strcmp("pass", new) == 0)
 			commands_pass(client, command);
 		else
-			dprintf(client->client_fd, "530 Please login with USER and PASS\r\n");
+			dprintf(client->client_fd, commands_infos[17]);
 		return 1;
 	}
 	return 0;

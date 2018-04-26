@@ -37,7 +37,8 @@ int connect_to_client(t_client *client)
 
 void make_port(t_client *client, char **ips, char **ps)
 {
-	asprintf(&client->client_ip, "%s.%s.%s.%s", ips[0], ips[1], ips[2], ips[3]);
+	asprintf(&client->client_ip, "%s.%s.%s.%s", ips[0], ips[1],
+		ips[2], ips[3]);
 	client->client_port = (atoi(ps[0]) * 256) + atoi(ps[1]);
 	dprintf(client->client_fd, commands_infos[3]);
 	client->client_status = ACTIV;

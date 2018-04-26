@@ -40,11 +40,11 @@ void commands_retr(t_client *client, char *command)
 		return ;
 	}
 	dprintf(client->client_fd, commands_infos[2]);
-	client->second_fd = (client->client_status == PASV ? accept_connection(client->second_fd, client) : connect_to_client(client));
-	if (client->second_fd == 84) {
-		perror("Fd accept or connection: ");
+	client->second_fd = (client->client_status == PASV ?
+		accept_connection(client->second_fd, client) :
+		connect_to_client(client));
+	if (client->second_fd == 84)
 		return ;
-	}
 	asprintf(&filename, "%s%s%s", client->base_path, client->path, arg);
 	main_retr(client, filename);
 	close(client->second_fd);

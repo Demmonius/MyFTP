@@ -14,15 +14,13 @@ static void	main_list(t_client *client, int save)
 	char		*full_cmd;
 
 	dprintf(client->client_fd, commands_infos[2]);
-	client->second_fd = (client->client_status == PASV ? accept_connection(client->second_fd, client) : connect_to_client(client));
-	if (client->second_fd == 84) {
-		perror("Fd accept or connection: ");
+	client->second_fd = (client->client_status == PASV ?
+		accept_connection(client->second_fd, client) :
+			connect_to_client(client));
+	if (client->second_fd == 84)
 		return ;
-	}
-	if (dup2(client->second_fd, 1) == -1) {
-		fprintf(stderr, "Dup2 failed\n");
+	if (dup2(client->second_fd, 1) == -1)
 		return ;
-	}
 	asprintf(&full_cmd, cmd, client->base_path, client->path);
 	if (system(full_cmd) == -1) {
 		dup2(save, 1);

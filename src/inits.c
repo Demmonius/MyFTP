@@ -18,7 +18,8 @@
  */
 int	accept_connection(int fd, t_client *client)
 {
-	int new_fd  = accept(fd, (struct sockaddr *) &client->s_in_client, &client->s_in_size);
+	int new_fd  = accept(fd, (struct sockaddr *) &client->s_in_client,
+			&client->s_in_size);
 
 	if (new_fd == -1)
 		return 84;
@@ -85,10 +86,8 @@ t_host	*init_host(char **av)
 	server->server_fd = socket(AF_INET, SOCK_STREAM, server->pe->p_proto);
 	if (server->server_fd == -1)
 		return NULL;
-	if (bind(server->server_fd, (const struct sockaddr *)&server->s_in, sizeof(server->s_in)))
-	{
-		if (close(server->server_fd) == -1)
-			write(2, "Can't close bind\n", strlen("Can't close bind\n"));
+	if (bind(server->server_fd, (const struct sockaddr *)&server->s_in,
+		sizeof(server->s_in))) {
 		return NULL;
 	}
 	return server;
