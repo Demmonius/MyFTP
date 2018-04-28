@@ -18,6 +18,7 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_pasv,
 	commands_port,
 	commands_stor,
+	commands_help,
 	
 };
 
@@ -32,6 +33,7 @@ const char commands_name[][64] = {
 	"pasv",
 	"port",
 	"stor",
+	"help"
 };
 
 const char commands_infos[][256] = {
@@ -40,9 +42,9 @@ const char commands_infos[][256] = {
         "150 File status okay; about to open data connection.\n",
         "200 Command okay.\n",
         "214 Help message.\n\
-            On how to use the server or the meaning of a particular\n\
-            non-standard command.  This reply is useful only to the\n\
-            human user.",
+        On how to use the server or the meaning of a particular\n\
+        non-standard command.  This reply is useful only to the\n\
+        human user.\n",
         "220 Service ready for new user.\n",
         "221 Service closing control connection. \
             Logged out if appropriate.",
