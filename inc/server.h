@@ -5,10 +5,6 @@
 ** Main Header file
 */
 
-/*!
- * @file server.h
- */
-
 #ifndef SERVER_H_
 	#define SERVER_H_
 
@@ -29,19 +25,14 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include "client.h"
-/*!
- * @brief Typedef from s_host to t_host
- * @typedef t_host
- * @struct s_host
- * @brief Server data
- */
+
 typedef struct s_host
 {
-	struct protoent			*pe; /*! Protocal struct data */
-	struct sockaddr_in		s_in; /*! Socket struct  */
-	int				port; /*! Actual port to use */
-	int				server_fd; /*! Server's fd*/
-	char				*path; /*! Basic path to begin */
+	struct protoent			*pe;
+	struct sockaddr_in		s_in;
+	int				port;
+	int				server_fd;
+	char				*path;
 }					t_host;
 
 char	*parse_command(char *command, char c, int nb);
@@ -68,9 +59,6 @@ void	commands_cdup(t_client *client, char *command);
 void	commands_help(t_client *client, char *command);
 void	commands_noop(t_client *client, char *command);
 
-/*!
- * @brief Defines number of functions pointers
- */
 #define LEN_FUNCS 12
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);

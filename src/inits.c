@@ -31,7 +31,7 @@ int	make_socket(int *port)
 	s_in.sin_port = htons((255 * 256) + p2);
 	s_in.sin_addr.s_addr = INADDR_ANY;
 
-	} while(bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
+	} while (bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
 	if (listen(fd, 1) == -1) {
 		perror("Listen: ");
 		return 84;

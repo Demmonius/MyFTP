@@ -21,13 +21,11 @@ static void main_retr(t_client *client, char *filename)
 				break ;
 			write(client->second_fd, &c, 1);
 		} while (42);
-	        putchar(c);
-	    fclose(file);
+		putchar(c);
+		fclose(file);
 	}
-	else {
+	else
 		dprintf(client->client_fd, commands_infos[16]);
-		printf("Tried access to |%s|\n", filename);
-	}
 }
 
 void commands_retr(t_client *client, char *command)

@@ -40,11 +40,11 @@ void commands_cdup(t_client *client, char *command)
 	free(client->path);
 	if (strlen(str) == 1) {
 		client->path = strdup("/");
-        	return ;
+		return ;
 	}
 	if (str[strlen(str) - 1] == '/')
 		str[strlen(str)-1] = '\0';
-	for(int i = strlen(str); str[i] != '/'; i--)
+	for (int i = strlen(str); str[i] != '/'; i--)
 		str[i] = '\0';
 	client->path = realloc(str, sizeof(char) * (strlen(str) + 1));
 }
