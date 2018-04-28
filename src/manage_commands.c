@@ -11,6 +11,7 @@
 void commands_quit(t_client *client, char *command)
 {
 	command = command;
+	dprintf(client->client_fd, commands_infos[6]);
 	client->have_to_quit = true;
 }
 
