@@ -5,10 +5,6 @@
 ** Second main Header file
 */
 
-/*!
- * @file client.h
- */
-
 #ifndef CLIENT_H_
 	#define CLIENT_H_
 
@@ -30,28 +26,23 @@ enum port_status {
 	PASV,
 	UNSET
 };
-/*!
- * @brief Typedef from s_client to t_client
- * @typedef t_client
- * @struct s_client
- * @brief Client data
- */
+
 typedef struct			s_client
 {
-	char            	*path; //! Actual client PATH
-	char			*base_path; //! Base from server
-	int			second_fd; //! Second socket open
-	char			*client_ip; //! Active mode IP client
-	int			client_port; //! Active mode PORT client
-	enum port_status	client_status; //! State of actual client port
-	int			client_fd; //! Client file descriptor
-	int			port; //! Actual port to use
-	socklen_t		s_in_size; //! Connection struct
-	struct protoent		*pe; //! Accept struct
-	struct sockaddr_in	s_in_client; //! Socket struct
-	bool			have_to_quit; //! Bool to know if user typed QUIT
-	bool			is_log; //! Know if the user is login
-	char			*user; //! Name of user use
+	char            	*path;
+	char			*base_path;
+	int			second_fd;
+	char			*client_ip;
+	int			client_port;
+	enum port_status	client_status;
+	int			client_fd;
+	int			port;
+	socklen_t		s_in_size;
+	struct protoent		*pe;
+	struct sockaddr_in	s_in_client;
+	bool			have_to_quit;
+	bool			is_log;
+	char			*user;
 }    			t_client;
 
 #endif /* !CLIENT_H_ */
