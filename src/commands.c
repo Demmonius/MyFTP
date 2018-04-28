@@ -19,7 +19,8 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_port,
 	commands_stor,
 	commands_help,
-	commands_noop
+	commands_noop,
+	commands_del
 };
 
 const char commands_name[][64] = {
@@ -34,7 +35,8 @@ const char commands_name[][64] = {
 	"port",
 	"stor",
 	"help",
-	"noop"
+	"noop",
+	"del"
 };
 
 const char commands_infos[][256] = {
@@ -52,7 +54,7 @@ const char commands_infos[][256] = {
 	"226 Directory send OK.\n",
 	"227 Entering Passive Mode (%s,255,%d).\n",
 	"230 User logged in, proceed.",
-	"250 Requested file action okay, completed.",
+	"250 Requested file action okay, completed.\n",
 	"257 %s created.",
 	"331 User name okay, need password.",
 	"332 Need account for login.",
