@@ -8,14 +8,6 @@
 #include "client.h"
 #include "server.h"
 
-
-/*!
- * @brief Manage accept connection
- * 
- * @param server Host struct to accept connection
- * @param client Setup new FD to the client
- * @return int Return status
- */
 int	accept_connection(int fd, t_client *client)
 {
 	int new_fd  = accept(fd, (struct sockaddr *) &client->s_in_client,
@@ -39,7 +31,7 @@ int	make_socket(int *port)
 	s_in.sin_port = htons((255 * 256) + p2);
 	s_in.sin_addr.s_addr = INADDR_ANY;
 
-	} while(bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
+	} while (bind(fd, (const struct sockaddr *)&s_in, sizeof(s_in)) == -1);
 	if (listen(fd, 1) == -1) {
 		perror("Listen: ");
 		return 84;
@@ -48,12 +40,6 @@ int	make_socket(int *port)
 	return fd;
 }
 
-/*!
- * @brief This function alloc a t_client struct and init it
- * @param server
- * @see t_client
- * @return t_client*
- */
 t_client	*make_client(t_host *server)
 {
 	t_client	*client = malloc(sizeof(t_client));

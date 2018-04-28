@@ -24,7 +24,7 @@ char	*read_file(char *filename)
 				break ;
 			i++;
 		} while (42);
-	        putchar(c);
+		putchar(c);
 		fclose(file);
 		buff[i] = '\0';
 	}

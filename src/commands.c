@@ -18,7 +18,8 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_pasv,
 	commands_port,
 	commands_stor,
-	
+	commands_help,
+	commands_noop
 };
 
 const char commands_name[][64] = {
@@ -32,27 +33,29 @@ const char commands_name[][64] = {
 	"pasv",
 	"port",
 	"stor",
+	"help",
+	"noop"
 };
 
 const char commands_infos[][256] = {
 	"120 Service ready in nnn minutes.",
-        "125 Data connection already open; transfer starting.",
-        "150 File status okay; about to open data connection.\n",
-        "200 Command okay.\n",
-        "214 Help message.\n\
-            On how to use the server or the meaning of a particular\n\
-            non-standard command.  This reply is useful only to the\n\
-            human user.",
-        "220 Service ready for new user.\n",
-        "221 Service closing control connection. \
-            Logged out if appropriate.",
-        "226 Directory send OK.\n",
-        "227 Entering Passive Mode (%s,255,%d).\n",
-        "230 User logged in, proceed.",
-        "250 Requested file action okay, completed.",
-        "257 %s created.",
-        "331 User name okay, need password.",
-        "332 Need account for login.",
+	"125 Data connection already open; transfer starting.",
+	"150 File status okay; about to open data connection.\n",
+	"200 Command okay.\n",
+	"214 Help message.\n\
+	On how to use the server or the meaning of a particular\n\
+	non-standard command.  This reply is useful only to the\n\
+	human user.\n",
+	"220 Service ready for new user.\n",
+	"221 Service closing control connection. \
+	Logged out if appropriate.",
+	"226 Directory send OK.\n",
+	"227 Entering Passive Mode (%s,255,%d).\n",
+	"230 User logged in, proceed.",
+	"250 Requested file action okay, completed.",
+	"257 %s created.",
+	"331 User name okay, need password.",
+	"332 Need account for login.",
 	"425 Use PORT or PASV first.\n",
 	"500 Unknown command.\n",
 	"550 Failed to open file\n",
@@ -72,7 +75,7 @@ int	c_count(char *str, char c)
 {
 	int n = 0;
 
-	for(int i = 0; str[i]; i++)
+	for (int i = 0; str[i]; i++)
 		if (str[i] == c)
 			n++;
 	return n;
