@@ -65,11 +65,12 @@ void	commands_pasv(t_client *client, char *command);
 void 	commands_port(t_client *client, char *command);
 void	commands_stor(t_client *client, char *command);
 void	commands_cdup(t_client *client, char *command);
+void	commands_help(t_client *client, char *command);
 
 /*!
  * @brief Defines number of functions pointers
  */
-#define LEN_FUNCS 10
+#define LEN_FUNCS 11
 
 extern void (*const commands[LEN_FUNCS])(t_client *, char *);
 extern const char commands_name[LEN_FUNCS][64];
