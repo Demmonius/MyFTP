@@ -5,19 +5,8 @@
 ** Main client C file
 */
 
-/*!
- * @file server.c
- */
-
 #include "client.h"
 #include "server.h"
-
-/*!
- * @brief Get command input from the client socket
- * 
- * @param client Use the client to open his file descriptor
- * @return char* Return the command with a \0 at the end
- */
 
 char	*get_command(t_client *client)
 {
@@ -35,12 +24,6 @@ char	*get_command(t_client *client)
 	return line;
 }
 
-/*!
- * @brief Function called when a client is accepted
- * 
- * @param client Pointer to the new client
- * @return int Return status
- */
 int    handle_client(t_client *client)
 {
 	char *command = NULL;
@@ -79,14 +62,6 @@ int	manage_child(t_host *server)
 		return (84);
 	return 0;
 }
-
-/*!
- * @brief Main function that call forks, etc...
- * 
- * @param ac To check len of args
- * @param av Use to define port and Anonymous home's directory
- * @return int Return status
- */
 
 int main (int ac, char **av)
 {

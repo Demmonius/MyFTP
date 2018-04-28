@@ -8,14 +8,6 @@
 #include "client.h"
 #include "server.h"
 
-
-/*!
- * @brief Manage accept connection
- * 
- * @param server Host struct to accept connection
- * @param client Setup new FD to the client
- * @return int Return status
- */
 int	accept_connection(int fd, t_client *client)
 {
 	int new_fd  = accept(fd, (struct sockaddr *) &client->s_in_client,
@@ -48,12 +40,6 @@ int	make_socket(int *port)
 	return fd;
 }
 
-/*!
- * @brief This function alloc a t_client struct and init it
- * @param server
- * @see t_client
- * @return t_client*
- */
 t_client	*make_client(t_host *server)
 {
 	t_client	*client = malloc(sizeof(t_client));

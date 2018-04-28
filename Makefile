@@ -18,6 +18,7 @@ SRCS	= ./src/commands/cwd.c \
 	  ./src/commands/retr.c \
 	  ./src/commands/stor.c \
 	  ./src/commands/help.c \
+	  ./src/commands/noop.c \
 	  ./src/commands.c \
 	  ./src/manage_commands.c \
 	  ./src/inits.c	\
