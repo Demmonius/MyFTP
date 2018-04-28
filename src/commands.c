@@ -49,8 +49,7 @@ const char commands_infos[][256] = {
 	non-standard command.  This reply is useful only to the\n\
 	human user.\n",
 	"220 Service ready for new user.\n",
-	"221 Service closing control connection. \
-	Logged out if appropriate.",
+	"221 GoodBye!\n",
 	"226 Directory send OK.\n",
 	"227 Entering Passive Mode (%s,255,%d).\n",
 	"230 User logged in, proceed.",
