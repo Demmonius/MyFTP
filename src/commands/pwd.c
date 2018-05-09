@@ -5,8 +5,20 @@
 ** Command gestion C file
 */
 
+/*!
+ * @brief Manage pwd command
+ * 
+ * @file pwd.c
+ */
+
 #include "server.h"
 
+/*!
+ * @brief Manage pwd command
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void	commands_pwd(t_client *client, char *command)
 {
 	command = command;

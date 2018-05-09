@@ -5,9 +5,20 @@
 ** Command gestion C file
 */
 
+/*!
+ * @brief List command
+ * 
+ * @file list.c
+ */
 #define _GNU_SOURCE
 #include "server.h"
 
+/*!
+ * @brief Execute ls with sed
+ * 
+ * @param client Client struct
+ * @param save int to initial fd, to recover after dup2
+ */
 static void	main_list(t_client *client, int save)
 {
 	const char	*const cmd = "ls -l %s%s | sed 1d";
@@ -29,6 +40,12 @@ static void	main_list(t_client *client, int save)
 	}
 }
 
+/*!
+ * @brief Command list
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void	commands_list(t_client *client, char *command)
 {
 	const int	save = dup(1);

@@ -5,9 +5,22 @@
 ** Command gestion C file
 */
 
+/*!
+ * @brief Different modes functions
+ * 
+ * @file modes.c
+ */
+
 #define _GNU_SOURCE
 #include "server.h"
 
+
+/*!
+ * @brief Activate passiv mode
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void commands_pasv(t_client *client, char *command)
 {
 	int	port = -1;
@@ -19,6 +32,13 @@ void commands_pasv(t_client *client, char *command)
 	client->client_status = PASV;
 }
 
+
+/*!
+ * @brief Connect a client to a second socket
+ * 
+ * @param client Client struct
+ * @return int Return new File Descriptor
+ */
 int connect_to_client(t_client *client)
 {
 	struct protoent *pe = getprotobyname("TCP");
@@ -35,6 +55,13 @@ int connect_to_client(t_client *client)
 	return fd;
 }
 
+/*!
+ * @brief Create a new port
+ * 
+ * @param client Client to assign new port
+ * @param ips Pointer to IP address char *
+ * @param ps Pointer to both ports
+ */
 void make_port(t_client *client, char **ips, char **ps)
 {
 	asprintf(&client->client_ip, "%s.%s.%s.%s", ips[0], ips[1],
@@ -44,6 +71,12 @@ void make_port(t_client *client, char **ips, char **ps)
 	client->client_status = ACTIV;
 }
 
+/*!
+ * @brief Create a port for a second socket
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void commands_port(t_client *client, char *command)
 {
 	char	*arg = parse_command(command, ' ', 1);

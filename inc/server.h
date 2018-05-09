@@ -5,6 +5,10 @@
 ** Main Header file
 */
 
+/*!
+ * @brief Server header File
+ * @file server.h
+ */
 #ifndef SERVER_H_
 	#define SERVER_H_
 
@@ -26,13 +30,18 @@
 #include <dirent.h>
 #include "client.h"
 
+/*!
+ * @brief Server struct
+ * @struct s_host
+ * @typedef t_host
+ */
 typedef struct s_host
 {
-	struct protoent			*pe;
-	struct sockaddr_in		s_in;
-	int				port;
-	int				server_fd;
-	char				*path;
+	struct protoent			*pe; /*! Protoent struct for connections */
+	struct sockaddr_in		s_in; /*! Socket struct */
+	int				port; /*! Port to connect */
+	int				server_fd; /*! Own file descriptor */
+	char				*path; /*! Anonymous home directory */
 }					t_host;
 
 char	*parse_command(char *command, char c, int nb);

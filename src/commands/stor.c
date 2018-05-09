@@ -5,9 +5,20 @@
 ** Command gestion C file
 */
 
+/*!
+ * @brief Stor command file
+ * 
+ * @file stor.c
+ */
 #define _GNU_SOURCE
 #include "server.h"
 
+/*!
+ * @brief Read a file
+ * 
+ * @param filename path to file
+ * @return char* Return file with one char *
+ */
 char	*read_file(char *filename)
 {
 	FILE *file = fopen(filename, "r");
@@ -33,6 +44,12 @@ char	*read_file(char *filename)
 	return buff;
 }
 
+/*!
+ * @brief Command that manage stor command
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void commands_stor(t_client *client, char *command)
 {
 	char *filename;

@@ -5,9 +5,22 @@
 ** Main client C file
 */
 
+/*!
+ * @brief File that make inits
+ * 
+ * @file inits.c
+ */
+
 #include "client.h"
 #include "server.h"
 
+/*!
+ * @brief Accecpt connection from server
+ * 
+ * @param fd File Descriptor to accept
+ * @param client Client to connect
+ * @return int Return new File Descriptor
+ */
 int	accept_connection(int fd, t_client *client)
 {
 	int new_fd  = accept(fd, (struct sockaddr *) &client->s_in_client,
@@ -18,6 +31,12 @@ int	accept_connection(int fd, t_client *client)
 	return (new_fd);
 }
 
+/*!
+ * @brief Create a new socket
+ * Take a pointer as argument to fill port in the pointer
+ * @param port pointer that will be filled during process
+ * @return int Return new File Descriptor of the socket
+ */
 int	make_socket(int *port)
 {
 	struct protoent *pe = getprotobyname("TCP");
@@ -40,6 +59,12 @@ int	make_socket(int *port)
 	return fd;
 }
 
+/*!
+ * @brief Init a client struct
+ * Init client path, fd, port, etc...
+ * @param server Take server to connect as argument
+ * @return t_client* Return new struct allocated
+ */
 t_client	*make_client(t_host *server)
 {
 	t_client	*client = malloc(sizeof(t_client));
@@ -57,6 +82,13 @@ t_client	*make_client(t_host *server)
 	return client;
 }
 
+
+/*!
+ * @brief Init server struct
+ * 
+ * @param av Take the program arguments
+ * @return t_host* Return allocated server struct
+ */
 t_host	*init_host(char **av)
 {
 	t_host		*server = malloc(sizeof(t_host));
@@ -79,6 +111,12 @@ t_host	*init_host(char **av)
 	return server;
 }
 
+/*!
+ * @brief Listen server socket
+ * 
+ * @param server Server to listen
+ * @return t_host* Server after listen
+ */
 t_host	*listen_sock(t_host *server)
 {
 	if (listen(server->server_fd, 42) == -1)

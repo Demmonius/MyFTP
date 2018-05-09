@@ -5,9 +5,20 @@
 ** Command gestion C file
 */
 
+/*!
+ * @brief Manage retr command
+ * 
+ * @file retr.c
+ */
 #define _GNU_SOURCE
 #include "server.h"
 
+/*!
+ * @brief Opening file
+ * 
+ * @param client Client sturct
+ * @param filename File to open
+ */
 static void main_retr(t_client *client, char *filename)
 {
 	FILE *file;
@@ -29,6 +40,12 @@ static void main_retr(t_client *client, char *filename)
 		dprintf(client->client_fd, commands_infos[16]);
 }
 
+/*!
+ * @brief Manage retr command
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void commands_retr(t_client *client, char *command)
 {
 	char	*filename;

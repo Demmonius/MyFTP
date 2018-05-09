@@ -5,9 +5,22 @@
 ** Main client C file
 */
 
+/*!
+ * @brief Main c file
+ * 
+ * @file server.c
+ */
+
 #include "client.h"
 #include "server.h"
 
+
+/*!
+ * @brief Get the command object
+ * 
+ * @param client Take client struct to get read the client socket
+ * @return char* 
+ */
 char	*get_command(t_client *client)
 {
 	char *line = NULL;
@@ -24,6 +37,12 @@ char	*get_command(t_client *client)
 	return line;
 }
 
+/*!
+ * @brief Func run by each client
+ * 
+ * @param client Self object
+ * @return int Return status
+ */
 int    handle_client(t_client *client)
 {
 	char *command = NULL;
@@ -41,6 +60,12 @@ int    handle_client(t_client *client)
 	return 0;
 }
 
+/*!
+ * @brief Manage a new connection
+ * Fork, init new struct
+ * @param server Server struct for connection
+ * @return int Return status
+ */
 int	manage_child(t_host *server)
 {
 	t_client	*new = make_client(server);
@@ -63,6 +88,13 @@ int	manage_child(t_host *server)
 	return 0;
 }
 
+/*!
+ * @brief Main function
+ * 
+ * @param ac Check args len
+ * @param av Declare a port and the Anonymous's home directory
+ * @return int Return status
+ */
 int main (int ac, char **av)
 {
 	t_host		*server;

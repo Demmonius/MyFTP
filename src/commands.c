@@ -7,6 +7,9 @@
 
 #include "server.h"
 
+/*!
+ * @brief Global variable for functions pointers
+ */
 void (*const commands_func[])(t_client *, char *) = {
 	commands_list,
 	commands_quit,
@@ -22,7 +25,9 @@ void (*const commands_func[])(t_client *, char *) = {
 	commands_noop,
 	commands_del
 };
-
+/*!
+ * @brief String corresponding to pointer functions
+ */
 const char commands_name[][64] = {
 	"list",
 	"quit",
@@ -39,6 +44,9 @@ const char commands_name[][64] = {
 	"dele"
 };
 
+/*!
+ * @brief Global errors codes
+ */
 const char commands_infos[][256] = {
 	"120 Service ready in nnn minutes.",
 	"125 Data connection already open; transfer starting.",
@@ -63,6 +71,12 @@ const char commands_infos[][256] = {
 	"530 Please login with USER and PASS\n"
 };
 
+/*!
+ * @brief Transform char * tolowcase
+ * 
+ * @param str String to lowcase
+ * @return char* Return the same pointer but modified
+ */
 char *to_lowcase(char *str)
 {
 	for (int i = 0; str[i]; i++) {
@@ -72,6 +86,13 @@ char *to_lowcase(char *str)
 	return (str);
 }
 
+/*!
+ * @brief Count occurance of char
+ * 
+ * @param str String to parse
+ * @param c Char to count
+ * @return int Return the number of occurance of c in str
+ */
 int	c_count(char *str, char c)
 {
 	int n = 0;
@@ -82,6 +103,14 @@ int	c_count(char *str, char c)
 	return n;
 }
 
+/*!
+ * @brief Get a cutted string allocated
+ * 
+ * @param command Command to cut
+ * @param c Char to cut
+ * @param nb Part to get
+ * @return char* Return new allocated string
+ */
 char	*parse_command(char *command, char c, int nb)
 {
 	int count = 0;
@@ -105,6 +134,14 @@ char	*parse_command(char *command, char c, int nb)
 	return new;
 }
 
+/*!
+ * @brief Log user
+ * 
+ * @param client Client to connect
+ * @param new Command without first argument
+ * @param command Full command
+ * @return int Return status
+ */
 int manage_log(t_client *client, char *new, char *command)
 {
 	if (!client->is_log) {
@@ -119,6 +156,13 @@ int manage_log(t_client *client, char *new, char *command)
 	return 0;
 }
 
+/*!
+ * @brief Run command
+ * Will parse the command and execute this one if it exist
+ * @param command Full command from read
+ * @param client Client object
+ * @return int Return status
+ */
 int	manage_commands(char *command, t_client *client)
 {
 	char * new = to_lowcase(parse_command(command, ' ', 0));

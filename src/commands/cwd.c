@@ -5,9 +5,21 @@
 ** Command gestion C file
 */
 
+/*!
+ * @brief Cwd command
+ * 
+ * @file cwd.c
+ */
+
 #define _GNU_SOURCE
 #include "server.h"
 
+/*!
+ * @brief Command CWD
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void commands_cwd(t_client *client, char *command)
 {
 	char	*dir = parse_command(command, ' ', 1);

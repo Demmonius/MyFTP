@@ -5,9 +5,20 @@
 ** Command gestion C file
 */
 
+
+/*!
+ * @brief Delete command
+ * @file del.c
+ */
 #define _GNU_SOURCE
 #include "server.h"
 
+/*!
+ * @brief Delete command
+ * 
+ * @param client Client struct
+ * @param command command send
+ */
 void commands_del(t_client *client, char *command)
 {
 	char	*arg = parse_command(command, ' ', 1);
