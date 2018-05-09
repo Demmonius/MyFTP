@@ -7,6 +7,8 @@
 
 NAME	= server
 
+DOC_CONFIG_FILE = documentation.conf
+
 CC	= gcc
 
 RM	= rm -f
@@ -35,11 +37,15 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
+doc:
+	doxygen $(DOC_CONFIG_FILE)
+
 clean:
 	$(RM) $(OBJS)
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) -r doc
 
 re: fclean all
 
