@@ -1,15 +1,10 @@
 #!/bin/bash 
 
-if [ "$#" -ne 2 ]; then
-    echo "USAGE: $0 host port"
-    exit 0
-fi
-
 USERNAME="Anonymous"
 PASS=""
 
-HOST=$1
-PORT=$2
+HOST="127.0.0.1"
+PORT="`./empty_port.py`"
 MKFIFO=`which mkfifo`
 PIPE=fifo
 OUT=outfile
@@ -108,6 +103,28 @@ test00()
 
   local cmd1="USER $USERNAME"
   local cmd2="PASS $PASS"
+
+  launch_client $HOST $PORT
+  if [[ ! $? -eq 1 ]]; then
+    echo "KO"
+    kill_client
+    return
+  fi
+
+  launch_test "$test_name" "$cmd1" 331
+  launch_test "$test_name" "$cmd2" 230
+
+  print_succeeded "$test_name"
+  return
+}
+
+test01()
+{
+  local test_name="list"
+
+  local cmd1="USER $USERNAME"
+  local cmd2="PASS $PASS"
+  local cmd3="DEL /root/test.txt"
 
   launch_client $HOST $PORT
   if [[ ! $? -eq 1 ]]; then
