@@ -9,7 +9,7 @@ MKFIFO=`which mkfifo`
 PIPE=fifo
 OUT=outfile
 TAIL=`which tail`
-NC="`which nc` -C"
+NC="`which nc`"
 TIMEOUT=1 #max time before reading server response
 
 
@@ -120,7 +120,7 @@ test00()
 
 test01()
 {
-  local test_name="list"
+  local test_name="Delete root file"
 
   local cmd1="USER $USERNAME"
   local cmd2="PASS $PASS"
@@ -135,10 +135,37 @@ test01()
 
   launch_test "$test_name" "$cmd1" 331
   launch_test "$test_name" "$cmd2" 230
+  launch_test "$test_name" "$cmd3" 550
+
+  print_succeeded "$test_name"
+  return
+}
+
+test02()
+{
+  local test_name="Delete root file"
+  local test_file="`mktemp`"
+
+  echo "$test_file" > $PIPE
+  local cmd1="USER $USERNAME"
+  local cmd2="PASS $PASS"
+  local cmd3="DEL $test_file"
+
+  launch_client $HOST $PORT
+  if [[ ! $? -eq 1 ]]; then
+    echo "KO"
+    kill_client
+    return
+  fi
+
+  launch_test "$test_name" "$cmd1" 331
+  launch_test "$test_name" "$cmd2" 230
+  launch_test "$test_name" "$cmd3" 250
 
   print_succeeded "$test_name"
   return
 }
 
 test00
+test01
 clean
