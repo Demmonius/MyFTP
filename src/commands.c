@@ -36,7 +36,7 @@ const char commands_name[][64] = {
 	"stor",
 	"help",
 	"noop",
-	"del"
+	"dele"
 };
 
 const char commands_infos[][256] = {

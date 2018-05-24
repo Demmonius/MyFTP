@@ -54,7 +54,7 @@ int	manage_child(t_host *server)
 		handle_client(new);
 		close(new->client_fd);
 		free(new);
-		return 0;
+		exit(0);
 	}
 	else if (pid > 0)
 		close(new->client_fd);

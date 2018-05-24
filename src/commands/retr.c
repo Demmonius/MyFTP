@@ -15,6 +15,7 @@ static void main_retr(t_client *client, char *filename)
 
 	file = fopen(filename, "r");
 	if (file) {
+		dprintf(client->client_fd, commands_infos[2]);
 		do {
 			c = getc(file);
 			if (c == EOF)
@@ -37,7 +38,6 @@ void commands_retr(t_client *client, char *command)
 		dprintf(client->client_fd, commands_infos[14]);
 		return ;
 	}
-	dprintf(client->client_fd, commands_infos[2]);
 	client->second_fd = (client->client_status == PASV ?
 		accept_connection(client->second_fd, client) :
 		connect_to_client(client));
